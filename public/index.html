@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+    href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap"
+    rel="stylesheet"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="../src/index.css" />
+    <title>calender</title>
+  </head>
+  <body>
+    <div class="snow-container">
+      <div class="snow"></div>
+      <div id="root"></div>
+    </div>
+    <!-- 雪を降らせる -->
+    <!-- <script>
+      let snowContainer = document.querySelector(".snow-container");
+
+      let createSnow = () => {
+        const snow = document.createElement("span");
+        snow.className = "snow";
+        // 雪の大きさ
+        minSize = 5;
+        maxSize = 10;
+        let snowSize = Math.random() * (maxSize - minSize) + minSize;
+        snow.style.width = snowSize + "px";
+        snow.style.height = snowSize + "px";
+        // 雪の位置
+        snow.style.left = Math.random() * 100 + "%";
+
+        snowContainer.appendChild(snow);
+
+        // 10秒後に雪を消す
+        setTimeout(() => {
+          snow.remove();
+        }, 10000);
+      };
+
+      setInterval(createSnow, 100);
+    </script> -->
+  </body>
+</html>

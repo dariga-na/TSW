@@ -1,0 +1,238 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: space-around;
+}
+
+.leftSide {
+  width: 40%;
+  margin: 1rem 0.2rem 1rem 0;
+}
+.rightSide {
+  width: 55%;
+  margin: 1rem 0 1rem 0.2rem;
+}
+
+/* =======左上======= */
+.left-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: rgba(250, 235, 215, 0.224);
+  height: 7rem;
+}
+
+/* 今日の日付 */
+.today {
+  width: 40%;
+}
+
+.today {
+  color: #fff;
+}
+
+.today p {
+  font-size: 1.5rem;
+}
+
+/* 今日の予定 */
+.today-list {
+  width: 50%;
+  height: 100%;
+}
+
+.fc {
+  height: 100%;
+}
+
+.fc .fc-list-table td {
+  border: none;
+  padding: 0 0.5rem 0;
+}
+
+.fc-theme-standard .fc-list {
+  border: none;
+}
+
+.fc-list-day {
+  display: none;
+}
+
+/* ========天気======== */
+.weather {
+  border: 1px solid #000;
+}
+
+/* ========Todoリスト======== */
+.trello {
+  display: flex;
+  background-color: rgba(219, 249, 249, 0.267);
+  padding: 0.5rem;
+}
+
+.trello-section {
+  border: 1px solid white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.trello-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 10px 0 20px;
+}
+
+/* ========設定バー========== */
+.setting {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 0.3rem;
+}
+
+.setting a {
+  display: flex;
+  background-color: rgba(252, 236, 250, 0.692);
+  border: #000 solid 1px;
+  color: rgb(81, 79, 79);
+  margin-right: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.setting a:hover {
+  background-color: #c49ff1;
+  color: #000;
+}
+
+/* ========カレンダー本体======== */
+.calender {
+  position: relative;
+  height: 100%;
+}
+
+.body {
+  background-color: rgba(252, 236, 250, 0.692);
+  position: absolute;
+}
+
+
+/*日曜*/
+.fc-day-sun {
+  color: #f96b64;
+}
+/* 土曜 */
+.fc-day-sat {
+  color: #2186f9;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin: 0;
+  padding: 0.5rem 3rem;
+}
+
+.fc-button {
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+/* 前月翌月ボタンと月表示 */
+.fc-toolbar-chunk div {
+  display: flex;
+}
+.fc-toolbar-chunk h2 {
+  padding: 0 2rem;
+}
+
+:root {
+  --fc-small-font-size: 0.85em;
+  --fc-page-bg-color: #fff;
+  --fc-neutral-bg-color: hsla(0, 0%, 82%, 0.3);
+  --fc-neutral-text-color: grey;
+  --fc-border-color: #ddd;
+  --fc-button-text-color: #fff;
+  /* ↓編集 */
+  --fc-button-bg-color: #c49ff1;
+  --fc-button-border-color: #c49ff1;
+  --fc-button-hover-bg-color: #d1a0f6;
+  --fc-button-hover-border-color: #d1a0f6;
+  --fc-button-active-bg-color: #b27ff0;
+  --fc-button-active-border-color: #b27ff0;
+  --fc-event-bg-color: #fff;
+  --fc-event-border-color: #fff;
+  --fc-event-text-color: #000;
+  /* ↑編集 */
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+  --fc-more-link-bg-color: #d0d0d0;
+  --fc-more-link-text-color: inherit;
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+  --fc-non-business-color: hsla(0, 0%, 84%, 0.3);
+  --fc-bg-event-color: #8fdf82;
+  --fc-bg-event-opacity: 0.3;
+  --fc-highlight-color: rgba(188, 232, 241, 0.3);
+  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
+  --fc-now-indicator-color: red;
+}
+
+/* ========入力フォーム========== */
+.form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 70%;
+  background-color: #e3d3f8e0;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  text-align: center;
+}
+
+/* タイトル */
+h3 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.startRow {
+  display: flex;
+  padding-top: 2rem;
+}
+
+/* エラーメッセージ */
+.form p {
+  color: #e3342f;
+  margin: 0 0 15px;
+  font-size: 12px;
+}
+
+/* 送信ボタン */
+.form .submit-btn {
+  width: 50%;
+  padding: 0.5rem;
+  font-size: 16px;
+  background-color: #65b4f5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 2rem;
+}
+
+.form .submit-btn:hover {
+  background-color: #2a9af7;
+}

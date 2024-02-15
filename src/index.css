@@ -1,0 +1,45 @@
+/* =======背景======== */
+
+.snow-container {
+  background-image: url(../public/images/snowfall.jpg);
+  width: 100%;
+  background-size: cover;
+  position: relative;
+}
+
+.snow {
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  animation: snowFall 10s linear;
+  opacity: 0.3;
+}
+
+@keyframes snowFall {
+  0% {
+    opacity: 0;
+    top: 0;
+    transform: translateX(5px);
+  }
+  10% {
+    opacity: 0.1;
+    transform: translateX(-5px);
+  }
+  20% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+
+  90% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0;
+    top: 100vh;
+  }
+}
