@@ -1,9 +1,12 @@
 import "./App.css";
 import Calender from "./components/Calender.jsx";
-import Setting from "./components/Setting";
 import TodayList from "./components/TodayList.jsx";
 import Todo from "./components/Todo";
 import Form from "./components/Form.jsx";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
 
 function App() {
   const currentDate = new Date();
@@ -12,6 +15,14 @@ function App() {
     day: "2-digit",
     weekday: "short",
   });
+
+  const addEvent = () => {
+    const calenderElement = document.querySelector(".body");
+    const formElement = document.querySelector(".formContainer");
+
+    calenderElement.classList.add("hidden");
+    formElement.classList.add("visible");
+  };
 
   return (
     <div className="container">
@@ -27,7 +38,19 @@ function App() {
         <Todo />
       </div>
       <div className="rightSide">
-        <Setting />
+        <div className="setting">
+          <form action="#"></form>
+          <a onClick={addEvent}>
+            <EditCalendarOutlinedIcon />
+          </a>
+          <a href="#">
+            <DeleteIcon />
+          </a>
+          <a href="#">
+            <SettingsRoundedIcon />
+          </a>
+        </div>
+
         <div className="calender">
           <Calender />
           <Form />

@@ -1,9 +1,10 @@
 import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-const Calender = () => {
+export default function Calender() {
   const handleDateSelect = (selectionInfo) => {
     console.log("selectionInfo: ", selectionInfo); // 選択した範囲の情報をconsoleに出力
     const calendarApi = selectionInfo.view.calendar;
@@ -13,9 +14,8 @@ const Calender = () => {
   return (
     <div className="body">
       <FullCalendar
-        contentHeight={"auto"}
         locale={"ja"}
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         //初期表示設定
         initialView="dayGridMonth"
         titleFormat={{
@@ -26,16 +26,24 @@ const Calender = () => {
         headerToolbar={{
           left: "",
           center: "prev,title,next",
-          right: "today"
+          right: "today,dayGridMonth,timeGridWeek",
         }}
         buttonText={{
-          dayGridMonth: "月"
+          dayGridMonth: "月",
+          timeGridWeek: "週",
         }}
-        dayCellContent={function (arg) {
-          return arg.date.getDate();
+        views={{
+          dayGridMonth: {
+            dayCellContent: function (arg) {
+              return arg.date.getDate();
+            },
+          },
         }}
         fixedWeekCount={false}
         firstDay={1}
+        slotDuration={"00:30:00"}
+        scrollTime={"08:00:00"}
+        allDayContent={""}
         //イベント試し設定
         events={[
           {
@@ -48,7 +56,7 @@ const Calender = () => {
           { title: "ゴミ出し", start: "2024-02-02" },
           { title: "病院", start: "2024-02-02 14:30" },
           { title: "学校", start: "2024-02-13" },
-          { title: "仕事", start: "2024-02-13 19:00" },
+          { title: "仕事", start: "2024-02-13 19:00", allDay: true, },
           { title: "仕事", start: "2024-02-13 19:00" },
           { title: "仕事", start: "2024-02-13 19:00" },
         ]}
@@ -62,6 +70,4 @@ const Calender = () => {
       />
     </div>
   );
-};
-
-export default Calender;
+}
