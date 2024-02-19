@@ -221,6 +221,10 @@
   cursor: pointer;
 }
 
+.close-btn svg {
+  font-size: 2rem;
+}
+
 /* タイトル */
 h3 {
   font-size: 24px;

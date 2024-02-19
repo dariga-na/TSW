@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { ja } from "date-fns/locale/ja";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
-  Checkbox,
+  DatePicker,
+  TimePicker,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
+import {
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -12,52 +15,91 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { format } from "date-fns";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { addDays, format, subDays } from "date-fns";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
+export default function Form(props) {
+  const [startDate, setStartDate] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
+  useEffect(() => {
+    if (props.selectStart) {
+      setStartDate(props.selectStart);
+    }
+    if (props.selectEnd) {
+      setEndDate(subDays(props.selectEnd, 1));
+    }
+  }, [props.selectStart, props.selectEnd]);
 
-export default function Form() {
+  const [error, setError] = useState(null);
+  const errorMessage = useMemo(() => {
+    switch (error) {
+      case "invalidDate": {
+        return "有効な日付を入力してください";
+      }
+      default: {
+        return "";
+      }
+    }
+  }, [error]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-  
+    reset,
+  } = useForm({
+    defaultValues: { title: "", color: "white" },
+  });
+
+  const onSubmit = (data) => {
+    if (!startDate) {
+      console.log("開始を入力してください");
+    } else {
+      if (startTime) {
+        data.start = `${format(startDate, "yyyy-MM-dd")}  ${format(
+          startTime,
+          "HH:mm"
+        )}`;
+      } else {
+        data.start = `${format(startDate, "yyyy-MM-dd")}`;
+      }
+
+      if (endTime) {
+        data.end = `${format(endDate, "yyyy-MM-dd")} ${format(
+          endTime,
+          "HH:mm"
+        )}`;
+      } else if (endDate !== startDate) {
+        data.end = `${format(addDays(endDate, 1), "yyyy-MM-dd")}`;
+      }
+
+      console.log(data);
+
+      closeForm();
+    }
+  };
+
   const closeForm = () => {
     const calenderElement = document.querySelector(".body");
     const formElement = document.querySelector(".formContainer");
 
     calenderElement.classList.remove("hidden");
     formElement.classList.remove("visible");
+
+    setStartDate(null);
+    setStartTime(null);
+    setEndDate(null);
+    setEndTime(null);
+    reset();
   };
-  
-  const onSubmit = (data) => {
-    if (start === null) {
-      console.log("開始を入力してください");
-    } else {
-      data.start = `${format(start, "yyyy-MM-dd")} ${format(
-        startTime,
-        "HH:mm"
-        )}`;
-        data.end = `${format(end, "yyyy-MM-dd")} ${format(endTime, "HH:mm")}`;
-        
-        console.log(data);
-        
-        closeForm();
-      }
-    };
 
   return (
     <div className="formContainer">
       <div onClick={closeForm} className="close-btn">
-        <CancelOutlinedIcon />
+        <CloseRoundedIcon />
       </div>
       <h3>New Event</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="formArea">
@@ -65,17 +107,31 @@ export default function Form() {
           <div className="dateArea">
             <DatePicker
               label="Start"
-              value={start}
-              onChange={(newDate) => setStart(newDate)}
-              slotProps={{ textField: { size: "small" } }}
+              sx={{ width: 200 }}
+              value={startDate}
+              onChange={(newStartDate) => {
+                setStartDate(newStartDate);
+                setEndDate(newStartDate);
+              }}
+              onError={(newError) => setError(newError)}
+              slotProps={{
+                textField: {
+                  size: "small",
+                  helperText: errorMessage,
+                },
+                field: { clearable: true },
+              }}
+              name="startDate"
             />
-            <FormControlLabel control={<Checkbox />} label="Allday" />
             <TimePicker
-              label="Time"
+              sx={{ width: 140 }}
               timeSteps={{ minutes: 10 }}
               value={startTime}
-              onChange={(newTime) => setStartTime(newTime)}
-              slotProps={{ textField: { size: "small" } }}
+              onChange={(newStartTime) => setStartTime(newStartTime)}
+              slotProps={{
+                textField: { size: "small" },
+                field: { clearable: true },
+              }}
               className="timePicker"
             />
           </div>
@@ -83,17 +139,23 @@ export default function Form() {
           <div className="dateArea">
             <DatePicker
               label="End"
-              value={end}
-              onChange={(newDate) => setEnd(newDate)}
-              slotProps={{ textField: { size: "small" } }}
+              sx={{ width: 200 }}
+              value={endDate}
+              onChange={(newEndDate) => setEndDate(newEndDate)}
+              slotProps={{
+                textField: { size: "small" },
+                field: { clearable: true },
+              }}
             />
-            <FormControlLabel control={<Checkbox />} label="Allday" />
             <TimePicker
-              label="Time"
               timeSteps={{ minutes: 10 }}
               value={endTime}
-              onChange={(newTime) => setEndTime(newTime)}
-              slotProps={{ textField: { size: "small" } }}
+              onChange={(newEndTime) => setEndTime(newEndTime)}
+              sx={{ width: 140 }}
+              slotProps={{
+                textField: { size: "small" },
+                field: { clearable: true },
+              }}
               className="timePicker"
             />
           </div>
@@ -102,18 +164,55 @@ export default function Form() {
           label="Event"
           helperText={errors.title?.message}
           type="text"
-          {...register("title", { required: "入力してください" })}
+          name="title"
+          {...register("title", { required: "内容を入力してください" })}
           className="textField"
         />
         <FormControl>
           <FormLabel>Color</FormLabel>
           <RadioGroup row defaultValue="white" name="radio-buttons-group">
-            <FormControlLabel value="white" control={<Radio />} label="白" />
-            <FormControlLabel value="red" control={<Radio />} label="赤" />
-            <FormControlLabel value="blue" control={<Radio />} label="青" />
-            <FormControlLabel value="yellow" control={<Radio />} label="黄" />
-            <FormControlLabel value="green" control={<Radio />} label="緑" />
-            <FormControlLabel value="purple" control={<Radio />} label="紫" />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="white"
+              control={<Radio />}
+              label="白 "
+            />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="red"
+              control={<Radio />}
+              label="赤"
+            />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="blue"
+              control={<Radio />}
+              label="青"
+            />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="yellow"
+              control={<Radio />}
+              label="黄"
+            />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="green"
+              control={<Radio />}
+              label="緑"
+            />
+            <FormControlLabel
+              {...register("color")}
+              type="radio"
+              value="pink"
+              control={<Radio />}
+              label="ピンク"
+            />
           </RadioGroup>
         </FormControl>
 

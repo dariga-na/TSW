@@ -2,11 +2,9 @@ import "./App.css";
 import Calender from "./components/Calender.jsx";
 import TodayList from "./components/TodayList.jsx";
 import Todo from "./components/Todo";
-import Form from "./components/Form.jsx";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
 
 function App() {
   const currentDate = new Date();
@@ -52,8 +50,7 @@ function App() {
         </div>
 
         <div className="calender">
-          <Calender />
-          <Form />
+          <Calender addEvent={addEvent}/>
         </div>
       </div>
     </div>
