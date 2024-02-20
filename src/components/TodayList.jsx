@@ -19,7 +19,7 @@ const TodayList = () => {
             start: "2024-02-01 12:00",
             backgroundColor: "red",
           },
-          { title: "ゴミ出し", start: "2024-02-02" },
+          { title: "ゴミ出し", start: "2024-02-20" },
           { title: "病院", start: "2024-02-02 14:30" },
           { title: "学校", start: "2024-02-14" },
           { title: "仕事", start: "2024-02-14 19:00" },

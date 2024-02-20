@@ -86,7 +86,12 @@ export default function Calender(props) {
         selectMirror={true}
         eventClick={function (info) {
           // info.jsEvent.preventDefault();
-          alert(info.event.start + " : " + info.event.title);
+          alert(info.event.start + " : " + info.event.title); 
+          
+        }}
+        eventMouseEnter={function (info) {
+        }}
+        eventMouseLeave={function (info) {
         }}
       />
     </div>
