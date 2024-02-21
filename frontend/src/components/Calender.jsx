@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Form from "./Form.jsx";
+import axios from "axios";
 
 export default function Calender(props) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('http://localhost:8001/api/v1/events');
+          setData(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
   const [selectedDates, setSelectedDates] = useState({
     selectStart: null,
     selectEnd: null,
@@ -64,23 +80,7 @@ export default function Calender(props) {
         }}
         eventDisplay={"block"}
         displayEventEnd={true}
-        //イベント試し設定
-        events={[
-          {
-            title: "ランチ",
-            start: "2024-02-01 12:00",
-            backgroundColor: "purple",
-            borderColor: "green",
-          },
-          { title: "ゴミ出し", start: "2024-02-17 14:00", color: "red", borderColor: "green",},
-          { title: "ゴミ出し", start: "2024-02-09 09:00", end: "2024-02-10 10:00"},
-          { title: "ゴミ出し", start: "2024-02-02" },
-          { title: "病院", start: "2024-02-02 14:30" },
-          { title: "学校", start: "2024-02-13"},
-          { title: "仕事", start: "2024-02-13 19:00", end: "2024-02-13 21:00"},
-          { title: "仕事", start: "2024-02-13 19:00" },
-          { title: "仕事", start: "2024-02-13 19:00" },
-        ]}
+        events={data}
         select={handleDateSelect}
         selectable={true}
         selectMirror={true}

@@ -16,7 +16,8 @@ import {
   TextField,
 } from "@mui/material";
 import { addDays, format, subDays } from "date-fns";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import axios from "axios";
 
 export default function Form(props) {
   const [startDate, setStartDate] = useState(null);
@@ -59,25 +60,32 @@ export default function Form(props) {
       console.log("開始を入力してください");
     } else {
       if (startTime) {
-        data.start = `${format(startDate, "yyyy-MM-dd")}  ${format(
+        data.start = `${format(startDate, "yyyy-MM-dd")} ${format(
           startTime,
           "HH:mm"
         )}`;
       } else {
         data.start = `${format(startDate, "yyyy-MM-dd")}`;
       }
-
-      if (endTime) {
+      
+      if (endDate === startDate && !endTime) {
+        data.end ="";
+      } else if (endTime) {
         data.end = `${format(endDate, "yyyy-MM-dd")} ${format(
-          endTime,
-          "HH:mm"
-        )}`;
-      } else if (endDate !== startDate) {
+          endTime, "HH:mm")}`;
+      } else  {
         data.end = `${format(addDays(endDate, 1), "yyyy-MM-dd")}`;
       }
 
-      console.log(data);
+      const addData = async () => {
+        try {
+          await axios.post("http://localhost:8001/api/v1/event", data);
+        } catch (error) {
+          console.error("Error add data:", error);
+        }
+      };
 
+      addData();
       closeForm();
     }
   };
@@ -181,35 +189,35 @@ export default function Form(props) {
             <FormControlLabel
               {...register("color")}
               type="radio"
-              value="red"
+              value="#ffc68e"
               control={<Radio />}
-              label="赤"
+              label="オレンジ"
             />
             <FormControlLabel
               {...register("color")}
               type="radio"
-              value="blue"
+              value="#b2ffff"
               control={<Radio />}
               label="青"
             />
             <FormControlLabel
               {...register("color")}
               type="radio"
-              value="yellow"
+              value="#ffffa8"
               control={<Radio />}
               label="黄"
             />
             <FormControlLabel
               {...register("color")}
               type="radio"
-              value="green"
+              value="#c9ff93"
               control={<Radio />}
               label="緑"
             />
             <FormControlLabel
               {...register("color")}
               type="radio"
-              value="pink"
+              value="#ffbcff"
               control={<Radio />}
               label="ピンク"
             />
