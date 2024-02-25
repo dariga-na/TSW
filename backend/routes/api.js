@@ -3,7 +3,7 @@ const router = express.Router();
 const Event = require("../models/Event");
 
 //getメソッド
-router.get("/v1/events", async(req, res) => {
+router.get("/allevents", async (req, res) => {
   try {
     const allEvents = await Event.find({});
     res.status(200).json(allEvents);
@@ -13,8 +13,26 @@ router.get("/v1/events", async(req, res) => {
   }
 });
 
+//getメソッド
+router.get("/eventinfo", async (req, res) => {
+  try {
+    const event = await Event.find({ id: req.query.id });
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json(event);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+
 // postメソッド
-router.post("/v1/event", async(req, res) => {
+router.post("/addevent", async (req, res) => {
   try {
     const createEvent = await Event.create(req.body);
     res.status(200).json(createEvent);

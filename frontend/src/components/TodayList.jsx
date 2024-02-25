@@ -3,13 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import listPlugin from "@fullcalendar/list";
 import axios from "axios";
 
-const TodayList = () => {
+export default function TodayList() {
   const [data, setData] = useState([]);
 
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('http://localhost:8001/api/v1/events');
+          const response = await axios.get('http://localhost:8001/api/allevents');
           setData(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -29,7 +29,7 @@ const TodayList = () => {
         initialView="listDay" //初期表示設定
         listDayFormat={{ month: 'numeric', day: 'numeric', weekday: 'narrow' }}
         noEventsContent={"予定がありません"}
-        events={data} //イベント試し設定
+        events={data}
         eventClick={function (info) {
           // info.jsEvent.preventDefault();
           alert(info.event.start + " : " + info.event.title);
@@ -38,5 +38,3 @@ const TodayList = () => {
     </div>
   );
 };
-
-export default TodayList;

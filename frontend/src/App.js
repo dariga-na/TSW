@@ -13,7 +13,8 @@ function App() {
     day: "2-digit",
     weekday: "short",
   });
-
+  
+  // イベント追加パネルを表示する
   const addEvent = () => {
     const calenderElement = document.querySelector(".body");
     const formElement = document.querySelector(".formContainer");
@@ -50,7 +51,7 @@ function App() {
         </div>
 
         <div className="calender">
-          <Calender addEvent={addEvent}/>
+          <Calender addEvent={addEvent} />
         </div>
       </div>
     </div>

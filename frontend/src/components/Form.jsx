@@ -19,21 +19,19 @@ import { addDays, format, subDays } from "date-fns";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import axios from "axios";
 
+
 export default function Form(props) {
-  const [startDate, setStartDate] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  // タイトルとカラーのエラー表示とデータ登録
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: { title: "", color: "white" },
+  });
 
-  useEffect(() => {
-    if (props.selectStart) {
-      setStartDate(props.selectStart);
-    }
-    if (props.selectEnd) {
-      setEndDate(subDays(props.selectEnd, 1));
-    }
-  }, [props.selectStart, props.selectEnd]);
-
+  // 日付を直接入力したときのエラー表示
   const [error, setError] = useState(null);
   const errorMessage = useMemo(() => {
     switch (error) {
@@ -46,16 +44,22 @@ export default function Form(props) {
     }
   }, [error]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    defaultValues: { title: "", color: "white" },
-  });
+  // 日付定義
+  const [startDate, setStartDate] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
+  // カレンダー日付セルからイベント追加
+  useEffect(() => {
+    setStartDate(props.selectStart);
+    setEndDate(subDays(props.selectEnd, 1));
+  }, [props.selectStart, props.selectEnd]);
+
+  // イベント追加ボタン(入力フォーム)からイベント追加
   const onSubmit = (data) => {
+    data.id = format(new Date(), 'yyyyMMddHHmmss');
+
     if (!startDate) {
       console.log("開始を入力してください");
     } else {
@@ -67,19 +71,20 @@ export default function Form(props) {
       } else {
         data.start = `${format(startDate, "yyyy-MM-dd")}`;
       }
-      
-      if (endDate === startDate && !endTime) {
-        data.end ="";
+
+      if (endDate.toString() === startDate.toString() && !endTime) {
+        data.end = "";
       } else if (endTime) {
         data.end = `${format(endDate, "yyyy-MM-dd")} ${format(
           endTime, "HH:mm")}`;
-      } else  {
+      } else {
         data.end = `${format(addDays(endDate, 1), "yyyy-MM-dd")}`;
       }
 
+
       const addData = async () => {
         try {
-          await axios.post("http://localhost:8001/api/v1/event", data);
+          await axios.post("http://localhost:8001/api/addevent", data);
         } catch (error) {
           console.error("Error add data:", error);
         }
