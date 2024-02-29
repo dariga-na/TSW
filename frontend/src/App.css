@@ -132,7 +132,6 @@
   transition-duration: 1s;
 }
 
-
 /*日曜*/
 .fc-day-sun {
   color: #f96b64;
@@ -211,23 +210,20 @@
   z-index: -1;
   transition-duration: 1s;
 }
-.visible {
-  z-index: 1;
-  transition-duration: 1s;
-}
 
-.close-btn{
-  text-align: right;
+.close-btn {
+  margin: 0 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+.close-btn svg {
+  font-size: 2rem;
   cursor: pointer;
 }
 
-.close-btn svg {
-  font-size: 2rem;
-}
-
 /* タイトル */
-h3 {
-  font-size: 24px;
+.formContainer h3 {
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
   text-align: center;
@@ -292,34 +288,109 @@ h3 {
 /* ========イベント表示========== */
 .infoContainer {
   position: absolute;
-  top: 50%;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 30%;
+  background-color: #e3d3f8d8;
+  padding: 0.5rem 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transition-duration: 1s;
+  text-align: center;
+}
+
+.infoContainer .close-btn {
+  height: 1.3rem;
+}
+.infoContainer .close-btn svg {
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.eventTitle {
+  margin-bottom: 0.5rem;
+}
+
+.eventDate {
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+.eventform-btn svg {
+  font-size: 2.2rem;
+  padding: 0.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 0 1.5rem;
+}
+
+.eventform-btn button {
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  margin: 0 1.5rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  background-color: #fff;
+  margin: 0 1.5rem;
+}
+
+/* イベント削除確認フォーム */
+
+.confirm-delete {
+  z-index: -30;
+  position: absolute;
+  top: 23%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 40%;
+  height: 18%;
+  text-align: center;
+}
+
+.confirm-delete button {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+/* =========編集フォーム========= */
+.editContainer {
+  position: absolute;
+  top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 70%;
-  height: 30%;
-  background-color: #e3d3f8d8;
+  height: 90%;
+  background-color: #e3d3f8;
   padding: 1rem 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: -1;
   transition-duration: 1s;
 }
+
+.editContainer h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
 .visible {
-  z-index: 1;
+  z-index: 10;
   transition-duration: 1s;
 }
-
-.close-btn{
-  text-align: right;
-  cursor: pointer;
-}
-
-.close-btn svg {
-  font-size: 2rem;
-}
-
-/* タイトル */
-.selectday-list {
-  width: 50%;
-  height: 30%;
+.editContainer .visible {
+  transition-duration: 0;
 }

@@ -18,17 +18,17 @@ import {
 import { addDays, format, subDays } from "date-fns";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import axios from "axios";
-
+const backendURL = "http://localhost:8001";
 
 export default function Form(props) {
-  // タイトルとカラーのエラー表示とデータ登録
+  // タイトルのエラー表示とデータ登録
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: { title: "", color: "white" },
+    defaultValues: { title: "" },
   });
 
   // 日付を直接入力したときのエラー表示
@@ -49,6 +49,7 @@ export default function Form(props) {
   const [startTime, setStartTime] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [color, setColor] = useState("#fff");
 
   // カレンダー日付セルからイベント追加
   useEffect(() => {
@@ -57,11 +58,21 @@ export default function Form(props) {
   }, [props.selectStart, props.selectEnd]);
 
   // イベント追加ボタン(入力フォーム)からイベント追加
-  const onSubmit = (data) => {
-    data.id = format(new Date(), 'yyyyMMddHHmmss');
+  useEffect(() => {
+    setStartDate(null);
+    setEndDate(null);
+  }, []);
 
-    if (!startDate) {
-      console.log("開始を入力してください");
+  // イベント登録ボタンで外部データ登録
+  const onSubmit = async (data, event) => {
+    data.id = format(new Date(), "yyyyMMddHHmmss");
+    data.color = color;
+
+    if (startDate === null) {
+      document.querySelector(".startPicker p").textContent = "開始日は必須です";
+    } else if (error) {
+      event.preventDefault();
+      return;
     } else {
       if (startTime) {
         data.start = `${format(startDate, "yyyy-MM-dd")} ${format(
@@ -76,66 +87,75 @@ export default function Form(props) {
         data.end = "";
       } else if (endTime) {
         data.end = `${format(endDate, "yyyy-MM-dd")} ${format(
-          endTime, "HH:mm")}`;
+          endTime,
+          "HH:mm"
+        )}`;
       } else {
         data.end = `${format(addDays(endDate, 1), "yyyy-MM-dd")}`;
       }
 
-
-      const addData = async () => {
-        try {
-          await axios.post("http://localhost:8001/api/addevent", data);
-        } catch (error) {
-          console.error("Error add data:", error);
-        }
-      };
-
-      addData();
-      closeForm();
+      try {
+        await axios.post(`${backendURL}/api/addevent`, data);
+        closeForm();
+      } catch (error) {
+        console.error("Error add data:", error);
+      }
     }
   };
 
+  // フォームを白紙に戻す
+  const resetFormState = () => {
+    setStartDate(null);
+    setStartTime(null);
+    setEndDate(null);
+    setEndTime(null);
+    setColor("#fff");
+    setError(null);
+    reset();
+  };
+
+  // イベント登録後、フォーム×クリックどちらも共通する動作
   const closeForm = () => {
     const calenderElement = document.querySelector(".body");
     const formElement = document.querySelector(".formContainer");
 
     calenderElement.classList.remove("hidden");
     formElement.classList.remove("visible");
+    document.querySelector(".startPicker p").textContent = "";
 
-    setStartDate(null);
-    setStartTime(null);
-    setEndDate(null);
-    setEndTime(null);
-    reset();
+    setTimeout(() => {
+      resetFormState();
+    }, 1000);
   };
 
   return (
     <div className="formContainer">
-      <div onClick={closeForm} className="close-btn">
+      <div className="close-btn" onClick={closeForm}>
         <CloseRoundedIcon />
       </div>
       <h3>New Event</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="formArea">
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
           <div className="dateArea">
-            <DatePicker
-              label="Start"
-              sx={{ width: 200 }}
-              value={startDate}
-              onChange={(newStartDate) => {
-                setStartDate(newStartDate);
-                setEndDate(newStartDate);
-              }}
-              onError={(newError) => setError(newError)}
-              slotProps={{
-                textField: {
-                  size: "small",
-                  helperText: errorMessage,
-                },
-                field: { clearable: true },
-              }}
-              name="startDate"
-            />
+            <div className="startPicker">
+              <DatePicker
+                label="Start"
+                sx={{ width: 210 }}
+                onChange={(newStartDate) => {
+                  setStartDate(newStartDate);
+                  setEndDate(newStartDate);
+                }}
+                value={startDate}
+                onError={(newError) => setError(newError)}
+                slotProps={{
+                  textField: { size: "small", helperText: errorMessage },
+                  field: { clearable: true },
+                }}
+              />
+              <p
+                style={{ color: "red", fontSize: "small", paddingLeft: "1rem" }}
+              ></p>
+            </div>
             <TimePicker
               sx={{ width: 140 }}
               timeSteps={{ minutes: 10 }}
@@ -148,15 +168,17 @@ export default function Form(props) {
               className="timePicker"
             />
           </div>
-
           <div className="dateArea">
             <DatePicker
               label="End"
               sx={{ width: 200 }}
               value={endDate}
-              onChange={(newEndDate) => setEndDate(newEndDate)}
+              onChange={(newEndDate) => {
+                setEndDate(newEndDate);
+              }}
+              onError={(newError) => setError(newError)}
               slotProps={{
-                textField: { size: "small" },
+                textField: { size: "small", helperText: errorMessage },
                 field: { clearable: true },
               }}
             />
@@ -175,60 +197,42 @@ export default function Form(props) {
         </LocalizationProvider>
         <TextField
           label="Event"
-          helperText={errors.title?.message}
           type="text"
           name="title"
+          sx={{ width: 300 }}
+          // ↓枠が赤くなる
+          error={!!errors.title}
+          helperText={errors.title?.message}
           {...register("title", { required: "内容を入力してください" })}
           className="textField"
         />
         <FormControl>
           <FormLabel>Color</FormLabel>
-          <RadioGroup row defaultValue="white" name="radio-buttons-group">
+          <RadioGroup
+            row
+            name="radio-buttons-group"
+            defaultValue="#fff"
+            value={color}
+            onChange={(newColor) => {
+              setColor(newColor.target.value);
+            }}
+          >
+            <FormControlLabel value="#fff" control={<Radio />} label="白" />
             <FormControlLabel
-              {...register("color")}
-              type="radio"
-              value="white"
-              control={<Radio />}
-              label="白 "
-            />
-            <FormControlLabel
-              {...register("color")}
-              type="radio"
               value="#ffc68e"
               control={<Radio />}
               label="オレンジ"
             />
+            <FormControlLabel value="#b2ffff" control={<Radio />} label="青" />
+            <FormControlLabel value="#ffffa8" control={<Radio />} label="黄" />
+            <FormControlLabel value="#c9ff93" control={<Radio />} label="緑" />
             <FormControlLabel
-              {...register("color")}
-              type="radio"
-              value="#b2ffff"
-              control={<Radio />}
-              label="青"
-            />
-            <FormControlLabel
-              {...register("color")}
-              type="radio"
-              value="#ffffa8"
-              control={<Radio />}
-              label="黄"
-            />
-            <FormControlLabel
-              {...register("color")}
-              type="radio"
-              value="#c9ff93"
-              control={<Radio />}
-              label="緑"
-            />
-            <FormControlLabel
-              {...register("color")}
-              type="radio"
               value="#ffbcff"
               control={<Radio />}
               label="ピンク"
             />
           </RadioGroup>
         </FormControl>
-
         <button type="submit" className="submit-btn">
           登録
         </button>

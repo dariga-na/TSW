@@ -4,27 +4,120 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Form from "./Form.jsx";
+import EditForm from "./EditForm.jsx";
 import axios from "axios";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { addDays, format } from "date-fns";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+const backendURL = "http://localhost:8001";
 
 export default function Calender(props) {
-
   // 全てのイベントを取得し、カレンダーに表示させる
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/api/allevents');
+        const response = await axios.get(`${backendURL}/api/allevents`);
         setData(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [data]);
 
+  // カレンダー本体、隠れBOX
+  const calenderElement = document.querySelector(".body");
+  const infoElement = document.querySelector(".infoContainer");
+  const editElement = document.querySelector(".editContainer");
+
+  // ①
+  // イベントをクリックして詳細表示する
+  const handleEventSelect = async (info) => {
+    calenderElement.classList.add("hidden");
+    infoElement.classList.add("visible");
+    const id = info.event.id;
+
+    try {
+      const response = await axios.get(`${backendURL}/api/eventinfo/${id}`);
+      const eventData = response.data[0];
+
+      document.querySelector(".visible").style.background = eventData.color;
+      document.querySelector(
+        ".eventTitle h3"
+      ).textContent = `${eventData.title}`;
+      document.querySelector(
+        ".eventDate"
+      ).innerHTML = `<p>${eventData.start}</p><p>${eventData.end}</p>`;
+
+      document
+        .querySelector(".edit-btn")
+        .addEventListener("click", () => confirmEdit(eventData));
+      document
+        .querySelector(".delete-btn")
+        .addEventListener("click", () => confirmDelete(id, eventData));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // イベント表示を閉じるボタン
+  const closeInfo = () => {
+    infoElement.classList.remove("visible");
+    calenderElement.classList.remove("hidden");
+  };
+
+  // ②
+  // イベント削除ボタン
+  const confirmDelete = (id, eventData) => {
+    document.querySelector(".confirm-delete").classList.add("visible");
+    document.querySelector(".confirm-delete").style.background =
+      eventData.color;
+    document
+      .querySelector(".cancel-btn")
+      .addEventListener("click", () => deleteCancel());
+    document
+      .querySelector(".confirm-btn")
+      .addEventListener("click", () => deleteEvent(id));
+  };
+
+  // 削除キャンセルボタン
+  const deleteCancel = () => {
+    document.querySelector(".confirm-delete").classList.remove("visible");
+  };
+
+  // 削除OKボタン
+  const deleteEvent = async (id) => {
+    try {
+      await axios.delete(`${backendURL}/api/eventinfo/${id}`);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    document.querySelector(".confirm-delete").classList.remove("visible");
+    closeInfo();
+  };
+
+  // ③
+  // イベント編集ボタンでフォーム切り替え、現データを編集画面に共有する
+  const [editId, setEditId] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editColor, setEditColor] = useState("");
+  const [editStart, setEditStart] = useState(null);
+  const [editEnd, setEditEnd] = useState(null);
+  const confirmEdit = (eventData) => {
+    infoElement.classList.remove("visible");
+    editElement.classList.add("visible");
+
+    const { id, title, color, start, end } = eventData;
+    setEditId(id);
+    setEditTitle(title);
+    setEditColor(color);
+    setEditStart(start);
+    setEditEnd(end);
+  };
+
+  // ④
   // 日付セルをクリックしてイベントを追加する
   const [selectedDates, setSelectedDates] = useState({
     selectStart: null,
@@ -35,35 +128,10 @@ export default function Calender(props) {
     const { start, end } = info;
     setSelectedDates({
       selectStart: start,
-      selectEnd: end
-    })
+      selectEnd: end,
+    });
     props.addEvent();
   };
-
-  // イベントをクリックして詳細表示する
-  const infoElement = document.querySelector(".infoContainer");
-  const handleEventSelect = (info) => {
-    infoElement.classList.add("visible");
-    const id = info.event.id;
-    const eventInfo = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8001/api/eventinfo?id=${id}`);
-        document.querySelector(".visible").style = `background:${response.data[0].color};`
-        document.querySelector(".test").innerHTML=
-        `<h3>${response.data[0].title}</h3>
-        <p>start: ${response.data[0].start}</p>
-        <p>end: ${response.data[0].end}</p>`;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    eventInfo();
-  }
-  // イベント表示を閉じるボタン
-  const closeInfo = () => {
-    infoElement.classList.remove("visible");
-  };
-
 
   return (
     <>
@@ -100,9 +168,9 @@ export default function Calender(props) {
           scrollTime={"08:00:00"}
           allDayContent={""}
           eventTimeFormat={{
-            hour: 'numeric',
-            minute: '2-digit',
-            meridiem: false
+            hour: "numeric",
+            minute: "2-digit",
+            meridiem: false,
           }}
           eventDisplay={"block"}
           displayEventEnd={true}
@@ -111,19 +179,53 @@ export default function Calender(props) {
           selectable={true}
           selectMirror={true}
           eventClick={handleEventSelect}
-          eventMouseEnter={function (info) {
-          }}
-          eventMouseLeave={function (info) {
-          }}
+          eventMouseEnter={function (info) {}}
+          eventMouseLeave={function (info) {}}
         />
       </div>
+
+      {/* ＝＝＝＝以下はユーザーアクションで表示される隠れBOX＝＝＝＝ */}
+
+      {/* ①イベントクリックで表示される詳細BOX */}
       <div className="infoContainer">
         <div onClick={closeInfo} className="close-btn">
           <CloseRoundedIcon />
         </div>
-        <div className="test"></div>
+        <div className="eventTitle">
+          <h3></h3>
+        </div>
+        <div className="info-contents">
+          <div className="eventDate"></div>
+          <div className="eventform-btn">
+            <EditRoundedIcon className="edit-btn" />
+            <DeleteIcon className="delete-btn" />
+          </div>
+        </div>
       </div>
-      <Form selectStart={selectedDates.selectStart} selectEnd={selectedDates.selectEnd} />
+
+      {/* ②イベント詳細のごみ箱クリックで表示される確認BOX */}
+      <div className="confirm-delete">
+        <p>このイベントを削除しますか？</p>
+        <div>
+          <button className="cancel-btn">キャンセル</button>
+          <button className="confirm-btn">OK</button>
+        </div>
+      </div>
+
+      {/* ③イベント詳細の鉛筆クリックで表示される編集BOX */}
+      <EditForm
+        editId={editId}
+        editTitle={editTitle}
+        editColor={editColor}
+        editStart={editStart}
+        editEnd={editEnd}
+      />
+
+      {/* ④日付セル選択してイベント追加するフォーム */}
+      <Form
+        selectStart={selectedDates.selectStart}
+        selectEnd={selectedDates.selectEnd}
+      />
     </>
   );
 }

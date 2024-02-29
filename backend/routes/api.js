@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const Event = require("../models/Event");
 
@@ -9,27 +9,20 @@ router.get("/allevents", async (req, res) => {
     res.status(200).json(allEvents);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
-//getメソッド
-router.get("/eventinfo", async (req, res) => {
+//event id getメソッド
+router.get("/eventinfo/:id", async (req, res) => {
   try {
-    const event = await Event.find({ id: req.query.id });
-
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
+    const event = await Event.find({ id: req.params.id });
     res.status(200).json(event);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
-
-
 
 // postメソッド
 router.post("/addevent", async (req, res) => {
@@ -38,7 +31,32 @@ router.post("/addevent", async (req, res) => {
     res.status(200).json(createEvent);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
+  }
+});
+
+// deleteメソッド
+router.delete("/eventinfo/:id", async (req, res) => {
+  try {
+    const event = await Event.deleteMany({ id: req.params.id });
+    res.status(200).json(event);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+// putメソッド
+router.put("/eventinfo/:id", async (req, res) => {
+  try {
+    const event = await Event.updateOne(
+      { id: req.params.id },
+      { $set: req.body }
+    );
+    res.status(200).json(event);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
   }
 });
 
