@@ -9,6 +9,7 @@ import axios from "axios";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import { format, subDays } from "date-fns";
 const backendURL = "http://localhost:8001";
 
 export default function Calender(props) {
@@ -44,12 +45,22 @@ export default function Calender(props) {
       const eventData = response.data[0];
 
       document.querySelector(".visible").style.background = eventData.color;
+
       document.querySelector(
         ".eventTitle h3"
       ).textContent = `${eventData.title}`;
-      document.querySelector(
-        ".eventDate"
-      ).innerHTML = `<p>${eventData.start}</p><p>${eventData.end}</p>`;
+
+      // 正規表現を使用してendデータ判別
+      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+      if (datePattern.test(eventData.end)) {
+        document.querySelector(".eventDate").innerHTML = `<p>${
+          eventData.start
+        }</p><p>${format(subDays(eventData.end, 1), "yyyy-MM-dd")}</p>`;
+      } else {
+        document.querySelector(
+          ".eventDate"
+        ).innerHTML = `<p>${eventData.start}</p><p>${eventData.end}</p>`;
+      }
 
       document
         .querySelector(".edit-btn")

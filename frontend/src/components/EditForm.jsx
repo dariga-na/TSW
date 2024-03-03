@@ -55,12 +55,16 @@ export default function EditForm(props) {
     setValue("title", props.editTitle);
     setColor(props.editColor);
     setStartDate(props.editStart);
-    if (props.editEnd) {
+
+    // 正規表現を使用してendデータ判別
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (datePattern.test(props.editEnd)) {
       setEndDate(subDays(props.editEnd, 1));
+    } else if (props.editEnd) {
+      setEndDate(props.editEnd);
     } else {
       setEndDate(props.editStart);
     }
-    console.log(props.editEnd);
   }, [props.editId]);
 
   // 編集保存ボタンで外部データ上書き
@@ -107,11 +111,17 @@ export default function EditForm(props) {
   const resetFormState = () => {
     setStartDate(props.editStart);
     setStartTime(null);
-    if (props.editEnd) {
+
+    // endデータ判別
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (datePattern.test(props.editEnd)) {
       setEndDate(subDays(props.editEnd, 1));
+    } else if (props.editEnd) {
+      setEndDate(props.editEnd);
     } else {
       setEndDate(props.editStart);
     }
+
     setEndTime(null);
     setColor(props.editColor);
     setError(null);
@@ -144,7 +154,7 @@ export default function EditForm(props) {
             <div className="startDatePicker">
               <DatePicker
                 label="Start"
-                sx={{ width: 200 }}
+                sx={{ width: 210 }}
                 onChange={(newStartDate) => {
                   setStartDate(newStartDate);
                   setEndDate(newStartDate);
@@ -157,7 +167,12 @@ export default function EditForm(props) {
                 }}
               />
               <p
-                style={{ color: "red", fontSize: "small", paddingLeft: "1rem" }}
+                style={{
+                  color: "rgb(211, 47, 47)",
+                  fontSize: "12px",
+                  fontWeight: "400",
+                  paddingLeft: "0.9rem",
+                }}
               ></p>
             </div>
             <TimePicker
@@ -175,13 +190,14 @@ export default function EditForm(props) {
           <div className="dateArea">
             <DatePicker
               label="End"
-              sx={{ width: 200 }}
+              sx={{ width: 210 }}
               value={endDate}
               onChange={(newEndDate) => {
                 setEndDate(newEndDate);
               }}
+              onError={(newError) => setError(newError)}
               slotProps={{
-                textField: { size: "small" },
+                textField: { size: "small", helperText: errorMessage },
                 field: { clearable: true },
               }}
             />

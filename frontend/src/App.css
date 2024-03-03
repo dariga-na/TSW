@@ -66,6 +66,18 @@
   display: none;
 }
 
+tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-event {
+  color: #fff;
+}
+
+:root {
+  --fc-list-event-hover-bg-color: none;
+}
+
+.noEventInfo {
+  color: #fff;
+}
+
 /* ========天気======== */
 .weather {
   border: 1px solid #000;
@@ -99,7 +111,7 @@
   height: auto;
 }
 
-.setting a {
+.setting button {
   display: flex;
   background-color: rgba(252, 236, 250, 0.692);
   border: #000 solid 1px;
@@ -109,7 +121,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
-.setting a:hover {
+.setting button:hover {
   background-color: #c49ff1;
   color: #000;
 }
@@ -141,18 +153,18 @@
   color: #2186f9;
 }
 
-.fc-daygrid-day-top {
-  text-align: center;
+/* イベント表示設定 */
+:root {
+  --fc-event-text-color: #000;
+}
+.fc-event:hover {
+  cursor: pointer;
 }
 
+/* fullcalender埋め込み　上部バー */
 .fc .fc-toolbar.fc-header-toolbar {
   margin: 0;
   padding: 0.5rem 3rem;
-}
-
-.fc-button {
-  cursor: pointer;
-  border-radius: 50px;
 }
 
 /* 前月翌月ボタンと月表示 */
@@ -163,37 +175,37 @@
   padding: 0 2rem;
 }
 
-:root {
-  --fc-small-font-size: 0.85em;
-  --fc-page-bg-color: #fff;
-  --fc-neutral-bg-color: hsla(0, 0%, 82%, 0.3);
-  --fc-neutral-text-color: grey;
-  --fc-border-color: #ddd;
-  --fc-button-text-color: #fff;
-  /* ↓編集 */
-  --fc-button-bg-color: #c49ff1;
-  --fc-button-border-color: #c49ff1;
-  --fc-button-hover-bg-color: #d1a0f6;
-  --fc-button-hover-border-color: #d1a0f6;
-  --fc-button-active-bg-color: #b27ff0;
-  --fc-button-active-border-color: #b27ff0;
-  --fc-event-bg-color: #fff;
-  --fc-event-border-color: #fff;
-  --fc-event-text-color: #000;
-  /* ↑編集 */
-  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
-  --fc-more-link-bg-color: #d0d0d0;
-  --fc-more-link-text-color: inherit;
-  --fc-event-resizer-thickness: 8px;
-  --fc-event-resizer-dot-total-width: 8px;
-  --fc-event-resizer-dot-border-width: 1px;
-  --fc-non-business-color: hsla(0, 0%, 84%, 0.3);
-  --fc-bg-event-color: #8fdf82;
-  --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: rgba(188, 232, 241, 0.3);
-  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
-  --fc-now-indicator-color: red;
+/* 埋め込み上部ボタン */
+.fc-button {
+  cursor: pointer;
+  border-radius: 50px;
 }
+
+.fc .fc-button-primary {
+  background-color: rgba(184, 131, 240, 0.808) !important;
+  border: none !important;
+  border-radius: 50%;
+}
+.fc .fc-button-primary:hover {
+  background-color: rgba(149, 68, 236, 0.808) !important;
+}
+.fc-button-group button {
+  margin-left: 0.5rem !important;
+  border-radius: 50% !important;
+}
+
+.fc-button-primary:focus {
+  box-shadow: #dfd382 0px 0px 0px 0.2rem !important;
+}
+.fc-button-active:focus {
+  box-shadow: #8fdf82 0px 0px 0px 0.2rem !important;
+}
+.fc-button-active:active {
+  box-shadow: none;
+}
+
+/* .fc-header-toolbar .fc-toolbar .fc-toolbar-ltr {
+} */
 
 /* ========入力フォーム========== */
 .formContainer {
@@ -211,6 +223,13 @@
   transition-duration: 1s;
 }
 
+.formContainer .close-btn {
+  float: right;
+  margin: 0 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+
 .close-btn {
   margin: 0 0 0 auto;
   width: 2rem;
@@ -225,7 +244,7 @@
 .formContainer h3 {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin: 1rem;
   text-align: center;
 }
 
@@ -236,7 +255,7 @@
 }
 
 .dateArea {
-  margin-bottom: 2rem;
+  height: 6rem;
   display: flex;
   justify-content: center;
 }
@@ -255,7 +274,7 @@
 /* イベントテキストエリア */
 .textField {
   width: 70%;
-  margin-bottom: 1rem !important;
+  height: 6rem;
 }
 /* エラーメッセージ */
 .textField p {
@@ -278,7 +297,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 .submit-btn:hover {

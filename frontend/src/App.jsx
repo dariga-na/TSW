@@ -1,10 +1,11 @@
 import "./App.css";
 import Calender from "./components/Calender.jsx";
 import TodayList from "./components/TodayList.jsx";
-import Todo from "./components/Todo";
+import Todo from "./components/Todo.js";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Weather from "./components/Weather.jsx";
 
 function App() {
   const currentDate = new Date();
@@ -13,7 +14,7 @@ function App() {
     day: "2-digit",
     weekday: "short",
   });
-  
+
   // イベント追加パネルを表示する
   const addEvent = () => {
     const calenderElement = document.querySelector(".body");
@@ -33,21 +34,23 @@ function App() {
           </div>
           <TodayList />
         </div>
-        <div className="weather">ここに天気を入れる</div>
+        <div className="weather">
+          <Weather />
+        </div>
         <Todo />
       </div>
       <div className="rightSide">
         <div className="setting">
           <form action="#"></form>
-          <a onClick={addEvent}>
+          <button onClick={addEvent}>
             <EditCalendarOutlinedIcon />
-          </a>
-          <a href="#">
+          </button>
+          <button href="#">
             <DeleteIcon />
-          </a>
-          <a href="#">
+          </button>
+          <button href="#">
             <SettingsRoundedIcon />
-          </a>
+          </button>
         </div>
 
         <div className="calender">

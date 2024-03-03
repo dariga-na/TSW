@@ -153,7 +153,12 @@ export default function Form(props) {
                 }}
               />
               <p
-                style={{ color: "red", fontSize: "small", paddingLeft: "1rem" }}
+                style={{
+                  color: "rgb(211, 47, 47)",
+                  fontSize: "12px",
+                  fontWeight: "400",
+                  paddingLeft: "0.9rem",
+                }}
               ></p>
             </div>
             <TimePicker
@@ -171,7 +176,7 @@ export default function Form(props) {
           <div className="dateArea">
             <DatePicker
               label="End"
-              sx={{ width: 200 }}
+              sx={{ width: 210 }}
               value={endDate}
               onChange={(newEndDate) => {
                 setEndDate(newEndDate);
