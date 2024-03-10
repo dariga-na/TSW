@@ -13,7 +13,6 @@ const getCurrentLocation = () => {
         console.log("現在の緯度:", latitude);
         console.log("現在の経度:", longitude);
         resolve({ latitude, longitude });
-        // ここで取得した位置情報を使って天気情報を取得するなどの処理を行います。
       },
       (error) => {
         reject(error);

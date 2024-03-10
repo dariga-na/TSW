@@ -12,12 +12,12 @@
 }
 
 .leftSide {
-  width: 40%;
-  margin: 1rem 0.2rem 1rem 0;
+  width: 45%;
+  margin: 0.5rem 0 0.5rem 0;
 }
 .rightSide {
   width: 55%;
-  margin: 1rem 0 1rem 0.2rem;
+  margin: 0.5rem 0 0.5rem 0;
 }
 
 /* =======左上======= */
@@ -26,8 +26,7 @@
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
-  background-color: rgba(250, 235, 215, 0.224);
-  height: 7rem;
+  height: 16%;
 }
 
 /* 今日の日付 */
@@ -74,54 +73,241 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
   --fc-list-event-hover-bg-color: none;
 }
 
+/* 予定がないときの表示 */
 .noEventInfo {
   color: #fff;
+  font-size: large;
+}
+.fc .fc-list-empty {
+  background-color: #ffffff00;
+  justify-content: left;
+}
+
+/* ======linkページ共通 */
+.link-page {
+  height: 85%;
+  color: #fff;
+  padding: 0.5rem 0 0.5rem 1rem;
+}
+
+/* ========Todoリスト======== */
+.todo {
+  height: 90%;
+}
+
+.todo .btn {
+  color: #000;
+  background-color: #ddd;
+}
+
+.task-board {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.task {
+  margin: 0.5rem 0.2rem 0.2rem 0.7rem;
+  width: 50%;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem #fff;
+  text-align: center;
+}
+
+.task p {
+  font-size: 1.2rem;
+  margin: 1rem;
+}
+
+.task-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+.box {
+  background-color: #8a40cfdc;
+  width: 90%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+}
+.box:hover {
+  cursor: grab;
+}
+
+.board {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ======天気予報詳細ページ======= */
+.weatherForecastPage {
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem #fff;
+  height: 100%;
+}
+
+/* 現在地と公式ページアイコン */
+.forecast-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forecast-top h3 {
+  font-weight: normal;
+  margin-left: 3rem;
+  background-color: #ffffff6e;
+  color: #000;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 2rem;
+}
+
+.forecast-top img {
+  width: 5rem;
+}
+
+/* 天気メイン部分 */
+.info {
+  margin: 0 0.2rem;
+  width: 100%;
+}
+
+.today-forecast {
+  margin-bottom: 1rem;
+}
+
+.today-forecast h4 {
+  margin-right: 2rem;
+}
+
+/* 日の出アイコン */
+.sun-icon {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+.forecast-title {
+  display: flex;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+  color: #000;
+}
+
+/* 明日以降のボタン */
+.forecast-title button {
+  padding: 0.3rem;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  border-radius: 1rem !important;
+}
+
+.css-d9c359-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
+  color: #000 !important;
+  background-color: rgba(85, 145, 206, 0.685) !important;
+}
+
+/* 天気表示部分 */
+.forecast-container {
+  display: flex;
+  justify-content: center;
+}
+
+.forecast-container p {
+  height: 12%;
+  font-size: 0.9rem;
+}
+
+.forecast-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forecast-block {
+  margin-right: 0.1rem;
+  background-color: #45a7f7d0;
+  width: 11.5%;
+  height: 100%;
+  text-align: center;
+}
+
+.description-row {
+  height: 40%;
+}
+
+.widaycloudy {
+  height: 42% !important;
+  padding-top: 1rem;
+}
+
+/* ======右上========== */
+.right-top {
+  display: flex;
+  height: 7%;
+  margin-bottom: 0.3rem;
 }
 
 /* ========天気======== */
 .weather {
-  border: 1px solid #000;
-}
-
-/* ========Todoリスト======== */
-.trello {
+  color: #fff;
+  width: 75%;
   display: flex;
-  background-color: rgba(219, 249, 249, 0.267);
-  padding: 0.5rem;
+  justify-content: space-around;
+  align-items: center;
+}
+.weather a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #9becf1af;
+  border-radius: 1rem;
+  padding: 0.3rem;
+  width: 15%;
+  text-align: center;
 }
 
-.trello-section {
-  border: 1px solid white;
-  padding: 0.5rem;
-  border-radius: 10px;
-  margin: 10px;
+.forecast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 15%;
+  background-color: #9becf1af;
 }
 
-.trello-section-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 10px 0 20px;
+.forecast p {
+  width: 100%;
+}
+
+.forecast-bar .time {
+  font-size: 0.8rem;
 }
 
 /* ========設定バー========== */
-.setting {
+.icon {
   display: flex;
-  justify-content: right;
-  margin-bottom: 0.3rem;
-  height: auto;
+  width: 25%;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.setting button {
+.icon button {
   display: flex;
   background-color: rgba(252, 236, 250, 0.692);
   border: #000 solid 1px;
   color: rgb(81, 79, 79);
-  margin-right: 1rem;
   padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
 }
-.setting button:hover {
+.icon button:hover {
   background-color: #c49ff1;
   color: #000;
 }
@@ -130,13 +316,16 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
 .calender {
   position: relative;
   height: 93%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .body {
-  background-color: rgba(252, 236, 250, 0.692);
+  background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: 95%;
   transition-duration: 1s;
 }
 .hidden {
