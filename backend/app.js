@@ -29,17 +29,19 @@ appCalender.listen(calenderPORT, () => {
 });
 
 // タスク管理のバックエンド
-const appTask = express();
+const appTodo = express();
 const TaskApiRouter = require("./routes/TaskRoutes");
-const taskPORT = process.env.PORT || 5001;
+const LabelApiRouter = require("./routes/LabelRoutes");
+const todoPORT = process.env.PORT || 5001;
 
-appTask.use(express.urlencoded({ extended: true }));
-appTask.use(express.json());
-appTask.use(cors());
-appTask.use("/api", TaskApiRouter);
+appTodo.use(express.urlencoded({ extended: true }));
+appTodo.use(express.json());
+appTodo.use(cors());
+appTodo.use("/api/tasks", TaskApiRouter);
+appTodo.use("/api/labels", LabelApiRouter);
 
-appTask.listen(taskPORT, () => {
-  console.log(`Server is running on port ${taskPORT}`);
+appTodo.listen(todoPORT, () => {
+  console.log(`Server is running on port ${todoPORT}`);
 });
 
 // 天気取得のバックエンド
@@ -53,19 +55,20 @@ appWeather.listen(weatherPORT, () => {
   console.log(`Server is running on port ${weatherPORT}`);
 });
 
-appWeather.post("/weather", async (req, res) => {
+// 3時間予報
+appWeather.post("/weather_forecast", async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
     console.log("Received Latitude:", latitude);
     console.log("Received Longitude:", longitude);
 
-    const response = await axios.get(
+    const forecastResponse = await axios.get(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=ja`,
       { timeout: 5000 }
     );
 
     const weatherData = {
-      data: response.data,
+      data: forecastResponse.data,
     };
 
     res.json(weatherData);
@@ -75,4 +78,27 @@ appWeather.post("/weather", async (req, res) => {
   }
 });
 
-module.exports = { appCalender, appTask, appWeather };
+// 現在情報
+appWeather.post("/weather_current", async (req, res) => {
+  try {
+    const { latitude, longitude } = req.body;
+    console.log("Received Latitude:", latitude);
+    console.log("Received Longitude:", longitude);
+
+    const currentResponse = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=ja`,
+      { timeout: 5000 }
+    );
+
+    const weatherData = {
+      data: currentResponse.data,
+    };
+
+    res.json(weatherData);
+  } catch (error) {
+    console.error("Error fetching weather data:", error.message);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+module.exports = { appCalender, appTodo, appWeather };

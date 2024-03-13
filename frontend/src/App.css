@@ -5,19 +5,19 @@
   font-family: "M PLUS Rounded 1c", sans-serif;
 }
 
-.container {
+.main-wrapper {
   height: 100vh;
   display: flex;
   justify-content: space-around;
+  padding: 0.5rem 0 0.5rem 1rem;
 }
 
-.leftSide {
+.left-wrapper {
   width: 45%;
-  margin: 0.5rem 0 0.5rem 0;
 }
-.rightSide {
+
+.right-wrapper {
   width: 55%;
-  margin: 0.5rem 0 0.5rem 0;
 }
 
 /* =======左上======= */
@@ -85,167 +85,8 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
 
 /* ======linkページ共通 */
 .link-page {
-  height: 85%;
+  height: 84%;
   color: #fff;
-  padding: 0.5rem 0 0.5rem 1rem;
-}
-
-/* ========Todoリスト======== */
-.todo {
-  height: 90%;
-}
-
-.todo .btn {
-  color: #000;
-  background-color: #ddd;
-}
-
-.task-board {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-.task {
-  margin: 0.5rem 0.2rem 0.2rem 0.7rem;
-  width: 50%;
-  border-radius: 1rem;
-  box-shadow: 0 0 1rem #fff;
-  text-align: center;
-}
-
-.task p {
-  font-size: 1.2rem;
-  margin: 1rem;
-}
-
-.task-area {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: left;
-}
-
-.box {
-  background-color: #8a40cfdc;
-  width: 90%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
-}
-.box:hover {
-  cursor: grab;
-}
-
-.board {
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ======天気予報詳細ページ======= */
-.weatherForecastPage {
-  border-radius: 1rem;
-  box-shadow: 0 0 1rem #fff;
-  height: 100%;
-}
-
-/* 現在地と公式ページアイコン */
-.forecast-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.forecast-top h3 {
-  font-weight: normal;
-  margin-left: 3rem;
-  background-color: #ffffff6e;
-  color: #000;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 2rem;
-}
-
-.forecast-top img {
-  width: 5rem;
-}
-
-/* 天気メイン部分 */
-.info {
-  margin: 0 0.2rem;
-  width: 100%;
-}
-
-.today-forecast {
-  margin-bottom: 1rem;
-}
-
-.today-forecast h4 {
-  margin-right: 2rem;
-}
-
-/* 日の出アイコン */
-.sun-icon {
-  margin-left: 1rem;
-  margin-right: 0.5rem;
-}
-
-.forecast-title {
-  display: flex;
-  margin-bottom: 0.5rem;
-  justify-content: center;
-  color: #000;
-}
-
-/* 明日以降のボタン */
-.forecast-title button {
-  padding: 0.3rem;
-  font-size: 1rem;
-  margin: 0 0.5rem;
-  border-radius: 1rem !important;
-}
-
-.css-d9c359-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
-  color: #000 !important;
-  background-color: rgba(85, 145, 206, 0.685) !important;
-}
-
-/* 天気表示部分 */
-.forecast-container {
-  display: flex;
-  justify-content: center;
-}
-
-.forecast-container p {
-  height: 12%;
-  font-size: 0.9rem;
-}
-
-.forecast-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.forecast-block {
-  margin-right: 0.1rem;
-  background-color: #45a7f7d0;
-  width: 11.5%;
-  height: 100%;
-  text-align: center;
-}
-
-.description-row {
-  height: 40%;
-}
-
-.widaycloudy {
-  height: 42% !important;
-  padding-top: 1rem;
 }
 
 /* ======右上========== */
@@ -298,16 +139,29 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
   justify-content: space-around;
 }
 
-.icon button {
-  display: flex;
+.icon button,
+.icon a {
   background-color: rgba(252, 236, 250, 0.692);
-  border: #000 solid 1px;
   color: rgb(81, 79, 79);
+  border: none;
   padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
 }
-.icon button:hover {
+
+.icon button svg,
+.icon a svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon button:hover,
+.icon a:hover {
   background-color: #c49ff1;
   color: #000;
 }
@@ -321,284 +175,16 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
   justify-content: center;
 }
 
-.body {
-  background-color: rgba(255, 255, 255, 0.5);
-  position: absolute;
-  width: 95%;
-  height: 95%;
-  transition-duration: 1s;
-}
 .hidden {
   opacity: 0.5;
   transition-duration: 1s;
 }
 
-/*日曜*/
-.fc-day-sun {
-  color: #f96b64;
-}
-/* 土曜 */
-.fc-day-sat {
-  color: #2186f9;
-}
-
-/* イベント表示設定 */
-:root {
-  --fc-event-text-color: #000;
-}
-.fc-event:hover {
-  cursor: pointer;
-}
-
-/* fullcalender埋め込み　上部バー */
-.fc .fc-toolbar.fc-header-toolbar {
-  margin: 0;
-  padding: 0.5rem 3rem;
-}
-
-/* 前月翌月ボタンと月表示 */
-.fc-toolbar-chunk div {
-  display: flex;
-}
-.fc-toolbar-chunk h2 {
-  padding: 0 2rem;
-}
-
-/* 埋め込み上部ボタン */
-.fc-button {
-  cursor: pointer;
-  border-radius: 50px;
-}
-
-.fc .fc-button-primary {
-  background-color: rgba(184, 131, 240, 0.808) !important;
-  border: none !important;
-  border-radius: 50%;
-}
-.fc .fc-button-primary:hover {
-  background-color: rgba(149, 68, 236, 0.808) !important;
-}
-.fc-button-group button {
-  margin-left: 0.5rem !important;
-  border-radius: 50% !important;
-}
-
-.fc-button-primary:focus {
-  box-shadow: #dfd382 0px 0px 0px 0.2rem !important;
-}
-.fc-button-active:focus {
-  box-shadow: #8fdf82 0px 0px 0px 0.2rem !important;
-}
-.fc-button-active:active {
-  box-shadow: none;
-}
-
-/* .fc-header-toolbar .fc-toolbar .fc-toolbar-ltr {
-} */
-
-/* ========入力フォーム========== */
-.formContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 90%;
-  background-color: #e3d3f8d8;
-  padding: 1rem 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: -1;
-  transition-duration: 1s;
-}
-
-.formContainer .close-btn {
-  float: right;
-  margin: 0 0 0 auto;
-  width: 2rem;
-  height: 2rem;
-}
-
-.close-btn {
-  margin: 0 0 0 auto;
-  width: 2rem;
-  height: 2rem;
-}
-.close-btn svg {
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-/* タイトル */
-.formContainer h3 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 1rem;
-  text-align: center;
-}
-
-.formArea {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.dateArea {
-  height: 6rem;
-  display: flex;
-  justify-content: center;
-}
-
-/* Alldayボタン */
-.css-j204z7-MuiFormControlLabel-root {
-  padding-left: 1.5rem;
-}
-
-/* timeエリア */
-.timePicker {
-  width: 20%;
-  margin-left: 1rem !important;
-}
-
-/* イベントテキストエリア */
-.textField {
-  width: 70%;
-  height: 6rem;
-}
-/* エラーメッセージ */
-.textField p {
-  color: red;
-}
-
-/* カラーエリア */
-.css-j204z7-MuiFormControlLabel-root {
-  margin-right: 0 !important;
-}
-
-/* 送信ボタン */
-.submit-btn {
-  width: 50%;
-  padding: 0.5rem;
-  font-size: 1.1rem;
-  background-color: #65b4f5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 2rem;
-}
-
-.submit-btn:hover {
-  background-color: #2a9af7;
-}
-
-/* ========イベント表示========== */
-.infoContainer {
-  position: absolute;
-  top: 18%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 30%;
-  background-color: #e3d3f8d8;
-  padding: 0.5rem 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: -1;
-  transition-duration: 1s;
-  text-align: center;
-}
-
-.infoContainer .close-btn {
-  height: 1.3rem;
-}
-.infoContainer .close-btn svg {
-  font-size: 1.3rem;
-  cursor: pointer;
-}
-
-.eventTitle {
-  margin-bottom: 0.5rem;
-}
-
-.eventDate {
-  height: 3rem;
-  margin-bottom: 1rem;
-}
-
-.eventform-btn svg {
-  font-size: 2.2rem;
-  padding: 0.2rem;
-  cursor: pointer;
-  border-radius: 50%;
-  background-color: #fff;
-  margin: 0 1.5rem;
-}
-
-.eventform-btn button {
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  background-color: #fff;
-  margin: 0 1.5rem;
-  padding: 0.3rem 0.8rem;
-  cursor: pointer;
-  background-color: #fff;
-  margin: 0 1.5rem;
-}
-
-/* イベント削除確認フォーム */
-
-.confirm-delete {
-  z-index: -30;
-  position: absolute;
-  top: 23%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  width: 40%;
-  height: 18%;
-  text-align: center;
-}
-
-.confirm-delete button {
-  margin: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  cursor: pointer;
-}
-
-/* =========編集フォーム========= */
-.editContainer {
-  position: absolute;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 90%;
-  background-color: #e3d3f8;
-  padding: 1rem 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: -1;
-  transition-duration: 1s;
-}
-
-.editContainer h3 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
 .visible {
-  z-index: 10;
-  transition-duration: 1s;
+  z-index: 10 !important;
+  transition-duration: 1s !important;
 }
-.editContainer .visible {
-  transition-duration: 0;
+
+.display-none {
+  z-index: -10;
 }

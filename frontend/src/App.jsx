@@ -1,9 +1,9 @@
 import "./App.css";
-import Calender from "./Schedule/Calender.jsx";
-import TodayList from "./Schedule/TodayList.jsx";
-import Weather from "./Weather/Weather.jsx";
-import WeatherForecastPage from "./Weather/WeatherForecastPage.jsx";
-import TodoPage from "./Todo/TodoPage.jsx";
+import Calender from "./components/Schedule/Calender.jsx";
+import TodayList from "./components/Schedule/TodayList.jsx";
+import Weather from "./components/Weather/Weather.jsx";
+import WeatherForecastPage from "./components/Weather/WeatherForecastPage.jsx";
+import TodoPage from "./components/Todo/TodoPage.jsx";
 import Setting from "./components/Setting.jsx";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
@@ -29,8 +29,8 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div className="leftSide">
+    <div className="main-wrapper">
+      <div className="left-wrapper">
         <div className="left-top">
           <div className="today">
             <p>{currentDate.getFullYear() + "年"}</p>
@@ -46,7 +46,7 @@ function App() {
           </Routes>
         </div>
       </div>
-      <div className="rightSide">
+      <div className="right-wrapper">
         <div className="right-top">
           <div className="weather">
             <Weather />
@@ -56,19 +56,13 @@ function App() {
               <EditCalendarOutlinedIcon />
             </button>
             <Link to="/">
-              <button>
-                <FormatListBulletedRoundedIcon />
-              </button>
+              <FormatListBulletedRoundedIcon />
             </Link>
             <Link to="/weather_forecast">
-              <button>
-                <WbSunnyRoundedIcon />
-              </button>
+              <WbSunnyRoundedIcon />
             </Link>
             <Link to="/setting">
-              <button>
-                <SettingsRoundedIcon />
-              </button>
+              <SettingsRoundedIcon />
             </Link>
           </div>
         </div>

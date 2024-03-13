@@ -13,7 +13,7 @@ export default function Weather() {
         const currentLocation = await getCurrentLocation();
         const latitude = currentLocation.latitude;
         const longitude = currentLocation.longitude;
-        const response = await axios.post(`${backendURL}/weather`, {
+        const response = await axios.post(`${backendURL}/weather_forecast`, {
           latitude,
           longitude,
         });

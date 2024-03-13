@@ -3,7 +3,7 @@ const router = express.Router();
 const Task = require("../models/TaskModel");
 
 //getメソッド
-router.get("/all_tasks", async (req, res) => {
+router.get("/all", async (req, res) => {
   try {
     const Tasks = await Task.find({});
     res.status(200).json(Tasks);
@@ -14,7 +14,7 @@ router.get("/all_tasks", async (req, res) => {
 });
 
 // postメソッド
-router.post("/add_task", async (req, res) => {
+router.post("/add", async (req, res) => {
   try {
     const createTask = await Task.create(req.body);
     res.status(200).json(createTask);
@@ -25,7 +25,7 @@ router.post("/add_task", async (req, res) => {
 });
 
 // putメソッド
-router.put("/put_task/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const putTask = await Task.updateOne(
       { id: req.params.id },
@@ -39,7 +39,7 @@ router.put("/put_task/:id", async (req, res) => {
 });
 
 // deleteメソッド
-router.delete("/delete_task", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const deleteTask = await Task.deleteMany({ id: req.params.id });
     res.status(200).json(deleteTask);

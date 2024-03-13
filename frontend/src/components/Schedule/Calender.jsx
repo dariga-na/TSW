@@ -1,15 +1,16 @@
+import "./Schedule.css";
+import Form from "./Form.jsx";
+import EditForm from "./EditForm.jsx";
 import React, { useEffect, useState } from "react";
+import { format, subDays } from "date-fns";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Form from "./Form.jsx";
-import EditForm from "./EditForm.jsx";
-import axios from "axios";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { format, subDays } from "date-fns";
+import axios from "axios";
 const backendURL = "http://localhost:8001";
 
 export default function Calender(props) {
@@ -44,7 +45,8 @@ export default function Calender(props) {
       const response = await axios.get(`${backendURL}/api/eventinfo/${id}`);
       const eventData = response.data[0];
 
-      document.querySelector(".visible").style.background = eventData.color;
+      document.querySelector(".infoContainer").style.background =
+        eventData.color;
 
       document.querySelector(
         ".eventTitle h3"

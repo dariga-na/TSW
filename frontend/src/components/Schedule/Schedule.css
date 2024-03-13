@@ -1,0 +1,272 @@
+.body {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  transition-duration: 1s;
+  border-radius: 0.8rem;
+  box-shadow: 0 0 0.5rem #fff;
+}
+
+/*日曜*/
+.fc-day-sun {
+  color: #f96b64;
+}
+/* 土曜 */
+.fc-day-sat {
+  color: #2186f9;
+}
+
+/* イベント表示設定 */
+:root {
+  --fc-event-text-color: #000;
+}
+.fc-event:hover {
+  cursor: pointer;
+}
+
+/* fullcalender埋め込み　上部バー */
+.fc .fc-toolbar.fc-header-toolbar {
+  margin: 0;
+  padding: 0.5rem 3rem;
+}
+
+/* 前月翌月ボタンと月表示 */
+.fc-toolbar-chunk div {
+  display: flex;
+}
+.fc-toolbar-chunk h2 {
+  padding: 0 2rem;
+}
+
+/* 埋め込み上部ボタン */
+.fc-button {
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.fc .fc-button-primary {
+  background-color: rgba(184, 131, 240, 0.808) !important;
+  border: none !important;
+  border-radius: 50%;
+}
+.fc .fc-button-primary:hover {
+  background-color: rgba(149, 68, 236, 0.808) !important;
+}
+.fc-button-group button {
+  margin-left: 0.5rem !important;
+  border-radius: 50% !important;
+}
+
+.fc-button-primary:focus {
+  box-shadow: #dfd382 0px 0px 0px 0.2rem !important;
+}
+.fc-button-active:focus {
+  box-shadow: #8fdf82 0px 0px 0px 0.2rem !important;
+}
+.fc-button-active:active {
+  box-shadow: none;
+}
+
+/* .fc-header-toolbar .fc-toolbar .fc-toolbar-ltr {
+} */
+
+/* ========入力フォーム========== */
+.formContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 90%;
+  background-color: #e3d3f8d8;
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+}
+
+.formContainer .close-btn {
+  float: right;
+  margin: 0 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+
+.close-btn {
+  margin: 0 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+}
+.close-btn svg {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* タイトル */
+.formContainer h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem;
+  text-align: center;
+}
+
+.formArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dateArea {
+  height: 6rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Alldayボタン */
+.css-j204z7-MuiFormControlLabel-root {
+  padding-left: 1.5rem;
+}
+
+/* timeエリア */
+.timePicker {
+  width: 20%;
+  margin-left: 1rem !important;
+}
+
+/* イベントテキストエリア */
+.textField {
+  width: 70%;
+  height: 6rem;
+}
+/* エラーメッセージ */
+.textField p {
+  color: red;
+}
+
+/* カラーエリア */
+.css-j204z7-MuiFormControlLabel-root {
+  margin-right: 0 !important;
+}
+
+/* 送信ボタン */
+.submit-btn {
+  width: 50%;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  background-color: #65b4f5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 2rem;
+}
+
+.submit-btn:hover {
+  background-color: #2a9af7;
+}
+
+/* ========イベント表示========== */
+.infoContainer {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 30%;
+  padding: 0.5rem 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  text-align: center;
+}
+
+.infoContainer .close-btn {
+  height: 1.3rem;
+}
+.infoContainer .close-btn svg {
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.eventTitle {
+  margin-bottom: 0.5rem;
+}
+
+.eventDate {
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+.eventform-btn svg {
+  font-size: 2.2rem;
+  padding: 0.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 0 1.5rem;
+}
+
+.eventform-btn button {
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  margin: 0 1.5rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  background-color: #fff;
+  margin: 0 1.5rem;
+}
+
+/* イベント削除確認フォーム */
+
+.confirm-delete {
+  z-index: -30;
+  position: absolute;
+  top: 23%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 40%;
+  height: 18%;
+  text-align: center;
+}
+
+.confirm-delete button {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+/* =========編集フォーム========= */
+.editContainer {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 90%;
+  background-color: #e3d3f8;
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transition-duration: 1s;
+}
+
+.editContainer h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.editContainer .visible {
+  transition-duration: 0;
+}
