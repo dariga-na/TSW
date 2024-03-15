@@ -1,25 +1,33 @@
-.weatherForecastPage {
+.weather-wrapper {
+  height: 100%;
   border-radius: 1rem;
   box-shadow: 0 0 1rem #fff;
-  height: 100%;
 }
 
-/* 現在地アイコン */
-.forecast-top {
+/* ＝＝＝上部＝＝＝ */
+.weather-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
-.forecast-top h3 {
-  font-weight: normal;
-  margin-left: 3rem;
-  background-color: #ffffff6e;
-  color: #000;
+.city-name {
   margin-top: 0.5rem;
+  margin-left: 3rem;
+  color: rgb(81, 79, 79);
+  font-weight: bolder;
+  background-color: #ffffffb2;
   padding: 0.5rem;
   border-radius: 2rem;
+}
+
+.today-title {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 日の出アイコン */
@@ -28,39 +36,59 @@
   margin-right: 0.5rem;
 }
 
-.current-title {
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: center;
-  color: #fff;
-  margin-top: 0.5rem;
-}
-
 /* 公式アイコン */
-.forecast-top img {
+.weather-top img {
   width: 5rem;
 }
 
-/* 天気メイン部分 */
-.info {
-  margin: 0 0.2rem;
-  width: 100%;
-  height: 87%;
+/* ＝＝＝天気メイン＝＝＝ */
+.forecast-wrapper {
+  margin: 1rem 0.2rem 0.8rem;
+  width: 99%;
+  height: 86%;
 }
 
 .today-forecast {
-  margin-bottom: 1rem;
   position: relative;
-  height: 42%;
+  height: 43%;
 }
 
-/* 現在の天気コンテナ */
+.afterday-forecast {
+  height: 43%;
+}
+
+/* 明日以降のボタン */
+.forecastBtn-container {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.forecastBtn-container button {
+  padding: 0.3rem;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  background-color: var(--light-opacity-color);
+  border-radius: 1rem !important;
+}
+
+.forecastBtn-container button:hover {
+  background-color: var(--light-opacity-color);
+}
+
+.css-d9c359-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
+  color: #000 !important;
+  background-color: var(--medium-dark-opacity-color) !important;
+}
+
+/* ＝＝＝現在の天気コンテナ＝＝＝ */
 .current-weather {
   height: 100%;
   width: 47%;
   padding: 0.2rem 0.5rem;
   text-align: center;
-  background-color: #0243cfce;
+  background-color: var(--dark-opacity-color);
   border-radius: 1rem;
   box-shadow: 0 0 1rem #fff;
   position: absolute;
@@ -80,72 +108,42 @@
   transform: translate(-53%, 0);
 }
 
-.current-weather img {
-  height: 4.4rem;
+.current-table {
+  height: 86%;
+  display: flex;
+  justify-content: space-between;
 }
-.current-weather th {
+
+.current-table img {
+  width: 100%;
+}
+
+.current-table th {
   font-weight: normal;
   font-size: small;
 }
 
-.current-weather td {
+.current-table td {
   font-weight: bold;
 }
 
-.current-info {
-  display: flex;
-}
-
-/* 明日以降のボタン */
-.forecast-title {
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: center;
-  margin: 1.5rem 0 0.5rem;
-}
-
-.forecast-title button {
-  padding: 0.3rem;
-  font-size: 1rem;
-  margin: 0 0.5rem;
-  border-radius: 1rem !important;
-}
-
-.css-d9c359-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
-  color: #000 !important;
-  background-color: rgba(85, 145, 206, 0.685) !important;
-}
-
-/* 天気表示部分 */
+/* ＝＝＝上下共通の天気表示ブロック＝＝＝ */
 .forecast-container {
   position: relative;
   display: flex;
-}
-
-.forecast-container p {
-  height: 12%;
-  font-size: 0.9rem;
-}
-
-.forecast-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.forecast-block {
-  margin-right: 0.1rem;
-  background-color: #45a7f7d0;
-  width: 11.5%;
   height: 100%;
+}
+
+.forecast-icon svg {
+  font-size: 1.5rem;
+}
+
+.forecast-table {
+  width: 12%;
+  height: 100%;
+  margin-right: 0.1rem;
+  background-color: var(--medium-light-opacity-color);
   text-align: center;
-}
-
-.description-row {
-  height: 40%;
-}
-
-.widaycloudy {
-  height: 42% !important;
-  padding-top: 1rem;
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
 }

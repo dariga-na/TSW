@@ -1,8 +1,11 @@
 import "./Weather.css";
 import React, { useEffect, useState } from "react";
 import getCurrentLocation from "../utils/geolocation";
-import { addDays, format } from "date-fns";
 import axios from "axios";
+import { addDays, format } from "date-fns";
+import { ja } from "date-fns/locale";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import {
   WiThermometer,
   WiDayCloudy,
@@ -11,14 +14,12 @@ import {
 } from "react-icons/wi";
 import { PiWind } from "react-icons/pi";
 import { BsFillSunsetFill, BsFillSunriseFill } from "react-icons/bs";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import OpenWeatherLogo from "../images/OpenWeather-Logo.png";
 import { GiSandsOfTime } from "react-icons/gi";
+import OpenWeatherLogo from "../images/OpenWeather-Logo.png";
 
 const backendURL = "http://localhost:5000";
 
-// 360度を8分割して、方角を判定する
+// 360度を8分割して方角を判定
 const convertDegreesToDirection = (degrees) => {
   const directions = ["北", "北東", "東", "南東", "南", "南西", "西", "北西"];
   const index = Math.round(degrees / 45) % 8;
@@ -26,22 +27,13 @@ const convertDegreesToDirection = (degrees) => {
 };
 
 export default function WeatherForecastPage() {
-  const [loading, setLoading] = useState(true);
+  const today = new Date();
+
+  // ＝＝＝現在地をWeatherAPIにポスト、天気情報を取得＝＝＝
   const [currentData, setCurrentData] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
-  const [currentWeather, setCurrentWeather] = useState([]);
-  const [todayForecast, setTodayForecast] = useState([]);
-  const [tomorrowForecast, setTomorrowForecast] = useState([]);
-  const [twoDaysAfterForecast, setTwoDaysAfterForecast] = useState([]);
-  const [threeDaysAfterForecast, setThreeDaysAfterForecast] = useState([]);
-  const today = new Date();
-  const todayForecastBlocks = [];
-  const tomorrowForecastBlocks = [];
-  const twoDaysAfterForecastBlocks = [];
-  const threeDaysAfterForecastBlocks = [];
-  const [selectedForecast, setSelectedForecast] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 現在地をWeatherAPIにポストし、天気情報を取得
   const fetchData = async () => {
     try {
       const currentLocation = await getCurrentLocation();
@@ -67,7 +59,9 @@ export default function WeatherForecastPage() {
     fetchData();
   }, []);
 
-  // 現在情報の解析
+  // ＝＝＝現在情報の解析＝＝＝
+  const [currentWeather, setCurrentWeather] = useState([]);
+
   useEffect(() => {
     if (currentData) {
       const currentDataList = currentData.data;
@@ -93,68 +87,64 @@ export default function WeatherForecastPage() {
           <h3>
             {hours}:{min}　現在の天気
           </h3>
-          <div className="current-info">
-            <div>
-              <img src={iconUrl} alt="Weather Icon" className="weather-icon2" />
-              <br />
-              <p style={{ fontWeight: "bold" }}>{description}</p>
-              <table>
-                <tbody>
-                  <tr style={{ lineHeight: "2rem" }}>
-                    <th>気温</th>
-                    <td>{temp}℃</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2rem" }}>
-                    <th>体感</th>
-                    <td>{feelsLike}℃</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div style={{ paddingLeft: "0.4rem" }}>
-              <table>
-                <tbody>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>最高</th>
-                    <td>{tempMax}℃</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>湿度</th>
-                    <td>{humidity}％</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>雲の割合</th>
-                    <td>{clouds}％</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>風向</th>
-                    <td>{windDeg}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div style={{ paddingLeft: "0.4rem" }}>
-              <table>
-                <tbody>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>最低</th>
-                    <td>{tempMin}℃</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>気圧</th>
-                    <td>{pressure}hPa</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>視程</th>
-                    <td>{visibility}km</td>
-                  </tr>
-                  <tr style={{ lineHeight: "2.5rem" }}>
-                    <th>風速</th>
-                    <td>{windSpeed}m/s</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="current-table">
+            <table>
+              <tbody>
+                <tr style={{ height: "40%" }}>
+                  <td colSpan="2">
+                    <img src={iconUrl} alt="Weather Icon" />
+                  </td>
+                </tr>
+                <tr style={{ height: "30%" }}>
+                  <th>気温</th>
+                  <td>{temp}℃</td>
+                </tr>
+                <tr style={{ height: "30%" }}>
+                  <th>体感</th>
+                  <td>{feelsLike}℃</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <th>最高</th>
+                  <td>{tempMax}℃</td>
+                </tr>
+                <tr>
+                  <th>湿度</th>
+                  <td>{humidity}％</td>
+                </tr>
+                <tr>
+                  <th>雲の割合</th>
+                  <td>{clouds}％</td>
+                </tr>
+                <tr>
+                  <th>風向</th>
+                  <td>{windDeg}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <th>最低</th>
+                  <td>{tempMin}℃</td>
+                </tr>
+                <tr>
+                  <th>気圧</th>
+                  <td>{pressure}hPa</td>
+                </tr>
+                <tr>
+                  <th>視程</th>
+                  <td>{visibility}km</td>
+                </tr>
+                <tr>
+                  <th>風速</th>
+                  <td>{windSpeed}m/s</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </>
       );
@@ -163,15 +153,15 @@ export default function WeatherForecastPage() {
 
   // 現在情報の表示を動かす
   const currentWeatherElement = document.querySelector(".current-weather");
-  const forecastColumnElement = document.querySelector(".forecast-column");
+  const forecastColumnElement = document.querySelector(".forecast-icon");
   if (currentWeatherElement) {
-    if (new Date().getHours() >= 12) {
+    if (today.getHours() >= 12) {
       currentWeatherElement.classList.add("visible");
     }
-    if (new Date().getHours() >= 15) {
+    if (today.getHours() >= 15) {
       currentWeatherElement.classList.add("fifteen");
     }
-    if (new Date().getHours() >= 21) {
+    if (today.getHours() >= 21) {
       currentWeatherElement.classList.remove("fifteen");
       currentWeatherElement.classList.add("nineteen");
       if (forecastColumnElement) {
@@ -180,7 +170,17 @@ export default function WeatherForecastPage() {
     }
   }
 
-  // 3時間予報40個分を解析
+  // ＝＝＝3時間予報40個分を解析、日ごとに分割して表示＝＝＝
+  const [todayForecast, setTodayForecast] = useState([]);
+  const [tomorrowForecast, setTomorrowForecast] = useState([]);
+  const [twoDaysAfterForecast, setTwoDaysAfterForecast] = useState([]);
+  const [threeDaysAfterForecast, setThreeDaysAfterForecast] = useState([]);
+  const todayForecastBlocks = [];
+  const tomorrowForecastBlocks = [];
+  const twoDaysAfterForecastBlocks = [];
+  const threeDaysAfterForecastBlocks = [];
+  const [selectedForecast, setSelectedForecast] = useState([]);
+
   useEffect(() => {
     if (weatherData) {
       const weatherDataList = weatherData.data.list;
@@ -198,21 +198,32 @@ export default function WeatherForecastPage() {
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
         //3時間予報の各ブロック構成
         const block = (
-          <div key={index} className="forecast-block">
-            <p>{hours}時</p>
-            <p className="description-row" style={{ paddingBottom: "0.3rem" }}>
-              <img src={iconUrl} alt="Weather Icon" className="weather-icon2" />
-              <br />
-              {description}
-            </p>
-            <p style={{ paddingBottom: "0.3rem" }}>{temperature}℃</p>
-            <p style={{ paddingBottom: "0.3rem" }}>{pop}%</p>
-            <p>
-              {windDeg}
-              <br />
-              {windSpeed}m/s
-            </p>
-          </div>
+          <table key={index} className="forecast-table">
+            <tbody>
+              <tr>
+                <td>{hours}時</td>
+              </tr>
+              <tr>
+                <td>
+                  <img src={iconUrl} alt="Weather Icon" />
+                  <p>{description}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>{temperature}℃</td>
+              </tr>
+              <tr>
+                <td>{pop}%</td>
+              </tr>
+              <tr>
+                <td>
+                  {windDeg}
+                  <br />
+                  {windSpeed}m/s
+                </td>
+              </tr>
+            </tbody>
+          </table>
         );
         if (date === today.getDate()) {
           todayForecastBlocks.push(block);
@@ -247,7 +258,7 @@ export default function WeatherForecastPage() {
     setAlignment(newAlignment);
   };
 
-  // 日の出・日の入
+  // ＝＝＝日の出・日の入＝＝＝
   const sunriseTimestamp = weatherData?.data.city.sunrise;
   const sunsetTimestamp = weatherData?.data.city.sunset;
   const sunriseDate = new Date(sunriseTimestamp * 1000);
@@ -261,12 +272,12 @@ export default function WeatherForecastPage() {
     .toString()
     .padStart(2, "0")}:${sunsetDate.getMinutes().toString().padStart(2, "0")}`;
 
-  // OpenWeatherAPIの公式ページ
+  // ＝＝＝OpenWeatherAPIの公式ページ＝＝＝
   const openOfficialPage = () => {
     window.open("https://openweathermap.org/", "_blank");
   };
 
-  // ローディング中の表示
+  // ＝＝＝ローディング中の表示＝＝＝
   if (loading) {
     return (
       <div style={{ textAlign: "center", paddingTop: "1rem" }}>
@@ -276,10 +287,10 @@ export default function WeatherForecastPage() {
   }
 
   return (
-    <div className="weatherForecastPage">
-      <div className="forecast-top">
+    <div className="weather-wrapper">
+      <div className="weather-top">
         <h3 className="city-name">{weatherData?.data.city.name}</h3>
-        <div className="current-title">
+        <div className="today-title">
           <h4>今日</h4>
           <BsFillSunriseFill fontSize={"1.5rem"} className="sun-icon" />
           <p>{formattedSunriseTime}</p>
@@ -294,69 +305,94 @@ export default function WeatherForecastPage() {
         />
       </div>
 
-      <div className="info">
+      <div className="forecast-wrapper">
         <div className="today-forecast">
           <div className="forecast-container">
-            <div className="forecast-column">
-              <p>
-                <WiTime3 fontSize={"1.5rem"} />
-              </p>
-              <p className="widaycloudy">
-                <WiDayCloudy fontSize={"1.8rem"} />
-              </p>
-              <p>
-                <WiThermometer fontSize={"1.5rem"} />
-              </p>
-              <p>
-                <WiUmbrella fontSize={"1.5rem"} />
-              </p>
-              <p>
-                <PiWind fontSize={"1.5rem"} />
-              </p>
-            </div>
+            <table className="forecast-icon">
+              <tbody>
+                <tr>
+                  <td>
+                    <WiTime3 />
+                  </td>
+                </tr>
+                <tr style={{ height: "36%" }}>
+                  <td>
+                    <WiDayCloudy />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <WiThermometer />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <WiUmbrella />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <PiWind />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             {todayForecast}
           </div>
           <div className="current-weather">{currentWeather}</div>
         </div>
 
+        <div className="forecastBtn-container">
+          <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={buttonChange}
+            aria-label="Platform"
+          >
+            <ToggleButton value="tomorrow" onClick={tomorrow}>
+              {`明日${format(addDays(today, 1), "MM/dd(E)", { locale: ja })}`}
+            </ToggleButton>
+            <ToggleButton value="twoDaysAfter" onClick={twoDaysAfter}>
+              {`${format(addDays(today, 2), "MM/dd(E)", { locale: ja })}`}
+            </ToggleButton>
+            <ToggleButton value="threeDaysAfter" onClick={threeDaysAfter}>
+              {`${format(addDays(today, 3), "MM/dd(E)", { locale: ja })}`}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+
         <div className="afterday-forecast">
-          <div className="forecast-title">
-            <ToggleButtonGroup
-              color="primary"
-              value={alignment}
-              exclusive
-              onChange={buttonChange}
-              aria-label="Platform"
-            >
-              <ToggleButton value="tomorrow" onClick={tomorrow}>
-                {`明日${format(addDays(today, 1), "MM/dd")}`}
-              </ToggleButton>
-              <ToggleButton value="twoDaysAfter" onClick={twoDaysAfter}>
-                {`明後日${format(addDays(today, 2), "MM/dd")}`}
-              </ToggleButton>
-              <ToggleButton value="threeDaysAfter" onClick={threeDaysAfter}>
-                {`${format(addDays(today, 3), "MM/dd")}`}
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div>
           <div className="forecast-container">
-            <div className="forecast-column">
-              <p>
-                <WiTime3 fontSize={"1.5rem"} />
-              </p>
-              <p className="widaycloudy">
-                <WiDayCloudy fontSize={"1.8rem"} />
-              </p>
-              <p>
-                <WiThermometer fontSize={"1.5rem"} />
-              </p>
-              <p>
-                <WiUmbrella fontSize={"1.5rem"} />
-              </p>
-              <p>
-                <PiWind fontSize={"1.5rem"} />
-              </p>
-            </div>
+            <table className="forecast-icon">
+              <tbody>
+                <tr>
+                  <td>
+                    <WiTime3 />
+                  </td>
+                </tr>
+                <tr style={{ height: "36%" }}>
+                  <td>
+                    <WiDayCloudy />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <WiThermometer />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <WiUmbrella />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <PiWind />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             {selectedForecast}
           </div>
         </div>

@@ -16,6 +16,7 @@ const backendURL = "http://localhost:8001";
 export default function Calender(props) {
   // 全てのイベントを取得し、カレンダーに表示させる
   const [data, setData] = useState([]);
+  const [eventData, setEventData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,84 +31,76 @@ export default function Calender(props) {
   }, [data]);
 
   // カレンダー本体、隠れBOX
-  const calenderElement = document.querySelector(".body");
-  const infoElement = document.querySelector(".infoContainer");
-  const editElement = document.querySelector(".editContainer");
+  const calenderElement = document.querySelector(".calender-body");
+  const infoElement = document.querySelector(".eventInfo-container");
+  const editElement = document.querySelector(".eventEdit-wrapper");
+  const confirmDeleteElement = document.querySelector(
+    ".confirmDelete-container"
+  );
 
   // ①
-  // イベントをクリックして詳細表示する
+  // イベントをクリックしてデータを取得、一時保存する
   const handleEventSelect = async (info) => {
-    calenderElement.classList.add("hidden");
-    infoElement.classList.add("visible");
     const id = info.event.id;
 
     try {
       const response = await axios.get(`${backendURL}/api/eventinfo/${id}`);
-      const eventData = response.data[0];
-
-      document.querySelector(".infoContainer").style.background =
-        eventData.color;
-
-      document.querySelector(
-        ".eventTitle h3"
-      ).textContent = `${eventData.title}`;
-
-      // 正規表現を使用してendデータ判別
-      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-      if (datePattern.test(eventData.end)) {
-        document.querySelector(".eventDate").innerHTML = `<p>${
-          eventData.start
-        }</p><p>${format(subDays(eventData.end, 1), "yyyy-MM-dd")}</p>`;
-      } else {
-        document.querySelector(
-          ".eventDate"
-        ).innerHTML = `<p>${eventData.start}</p><p>${eventData.end}</p>`;
-      }
-
-      document
-        .querySelector(".edit-btn")
-        .addEventListener("click", () => confirmEdit(eventData));
-      document
-        .querySelector(".delete-btn")
-        .addEventListener("click", () => confirmDelete(id, eventData));
+      setEventData(response.data[0]);
+      calenderElement.classList.add("opacity-low");
+      infoElement.classList.add("visible");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  // イベントデータを詳細表示
+  useEffect(() => {
+    document.querySelector(".eventInfo-container").style.background =
+      eventData.color;
+    document.querySelector(".eventTitle").textContent = `${eventData.title}`;
+
+    // 正規表現を使用してendデータ判別
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (datePattern.test(eventData.end)) {
+      document.querySelector(".eventDate").innerHTML = `<p>${
+        eventData.start
+      }</p><p>${format(subDays(eventData.end, 1), "yyyy-MM-dd")}</p>`;
+    } else {
+      document.querySelector(
+        ".eventDate"
+      ).innerHTML = `<p>${eventData.start}</p><p>${eventData.end}</p>`;
+    }
+  }, [eventData]);
 
   // イベント表示を閉じるボタン
   const closeInfo = () => {
     infoElement.classList.remove("visible");
-    calenderElement.classList.remove("hidden");
+    calenderElement.classList.remove("opacity-low");
+    if (confirmDeleteElement.classList.contains("visible")) {
+      confirmDeleteElement.classList.remove("visible");
+    }
   };
 
   // ②
   // イベント削除ボタン
-  const confirmDelete = (id, eventData) => {
-    document.querySelector(".confirm-delete").classList.add("visible");
-    document.querySelector(".confirm-delete").style.background =
-      eventData.color;
-    document
-      .querySelector(".cancel-btn")
-      .addEventListener("click", () => deleteCancel());
-    document
-      .querySelector(".confirm-btn")
-      .addEventListener("click", () => deleteEvent(id));
+  const confirmDelete = () => {
+    confirmDeleteElement.classList.add("visible");
+    confirmDeleteElement.style.background = eventData.color;
   };
 
   // 削除キャンセルボタン
   const deleteCancel = () => {
-    document.querySelector(".confirm-delete").classList.remove("visible");
+    confirmDeleteElement.classList.remove("visible");
   };
 
   // 削除OKボタン
-  const deleteEvent = async (id) => {
+  const deleteEvent = async () => {
     try {
-      await axios.delete(`${backendURL}/api/eventinfo/${id}`);
+      await axios.delete(`${backendURL}/api/eventinfo/${eventData.id}`);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    document.querySelector(".confirm-delete").classList.remove("visible");
+    confirmDeleteElement.classList.remove("visible");
     closeInfo();
   };
 
@@ -118,7 +111,7 @@ export default function Calender(props) {
   const [editColor, setEditColor] = useState("");
   const [editStart, setEditStart] = useState(null);
   const [editEnd, setEditEnd] = useState(null);
-  const confirmEdit = (eventData) => {
+  const confirmEdit = () => {
     infoElement.classList.remove("visible");
     editElement.classList.add("visible");
 
@@ -147,22 +140,16 @@ export default function Calender(props) {
   };
 
   return (
-    <>
-      <div className="body">
+    <div className="schedule-wrapper">
+      <div className="calender-body">
         <FullCalendar
           locale={"ja"}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          //初期表示設定
           initialView="dayGridMonth"
-          titleFormat={{
-            year: "numeric",
-            month: "2-digit",
-          }}
-          //上部ボタン
           headerToolbar={{
-            left: "",
-            center: "prev,title,next",
-            right: "today,dayGridMonth,timeGridWeek",
+            start: "dayGridMonth,timeGridWeek,today",
+            center: "title",
+            end: "prev,next",
           }}
           buttonText={{
             dayGridMonth: "月",
@@ -173,6 +160,10 @@ export default function Calender(props) {
               dayCellContent: function (arg) {
                 return arg.date.getDate();
               },
+              titleFormat: { year: "numeric", month: "2-digit" },
+            },
+            timeGridWeek: {
+              titleFormat: { year: "numeric" },
             },
           }}
           fixedWeekCount={false}
@@ -197,31 +188,27 @@ export default function Calender(props) {
         />
       </div>
 
-      {/* ＝＝＝＝以下はユーザーアクションで表示される隠れBOX＝＝＝＝ */}
+      {/* ＝＝＝以下はユーザーアクションで表示される隠れBOX＝＝＝ */}
 
       {/* ①イベントクリックで表示される詳細BOX */}
-      <div className="infoContainer">
-        <div onClick={closeInfo} className="close-btn">
-          <CloseRoundedIcon />
+      <div className="eventInfo-container">
+        <div className="position-relative">
+          <CloseRoundedIcon className="close-btn" onClick={closeInfo} />
+          <h3 className="eventTitle"></h3>
         </div>
-        <div className="eventTitle">
-          <h3></h3>
-        </div>
-        <div className="info-contents">
-          <div className="eventDate"></div>
-          <div className="eventform-btn">
-            <EditRoundedIcon className="edit-btn" />
-            <DeleteIcon className="delete-btn" />
-          </div>
+        <div className="eventDate"></div>
+        <div className="eventInfo-btnContainer">
+          <EditRoundedIcon onClick={confirmEdit} />
+          <DeleteIcon onClick={confirmDelete} />
         </div>
       </div>
 
       {/* ②イベント詳細のごみ箱クリックで表示される確認BOX */}
-      <div className="confirm-delete">
+      <div className="confirmDelete-container">
         <p>このイベントを削除しますか？</p>
         <div>
-          <button className="cancel-btn">キャンセル</button>
-          <button className="confirm-btn">OK</button>
+          <button onClick={deleteCancel}>キャンセル</button>
+          <button onClick={deleteEvent}>OK</button>
         </div>
       </div>
 
@@ -239,6 +226,6 @@ export default function Calender(props) {
         selectStart={selectedDates.selectStart}
         selectEnd={selectedDates.selectEnd}
       />
-    </>
+    </div>
   );
 }

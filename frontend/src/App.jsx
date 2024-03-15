@@ -1,8 +1,7 @@
 import "./App.css";
 import Calender from "./components/Schedule/Calender.jsx";
 import TodayList from "./components/Schedule/TodayList.jsx";
-import Weather from "./components/Weather/Weather.jsx";
-import WeatherForecastPage from "./components/Weather/WeatherForecastPage.jsx";
+import WeatherPage from "./components/Weather/WeatherPage.jsx";
 import TodoPage from "./components/Todo/TodoPage.jsx";
 import Setting from "./components/Setting.jsx";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
@@ -21,10 +20,10 @@ function App() {
 
   // イベント追加パネルを表示する
   const addEvent = () => {
-    const calenderElement = document.querySelector(".body");
-    const formElement = document.querySelector(".formContainer");
+    const calenderElement = document.querySelector(".calender-body");
+    const formElement = document.querySelector(".eventForm-wrapper");
 
-    calenderElement.classList.add("hidden");
+    calenderElement.classList.add("opacity-low");
     formElement.classList.add("visible");
   };
 
@@ -41,34 +40,27 @@ function App() {
         <div className="link-page">
           <Routes>
             <Route path="/" element={<TodoPage />} />
-            <Route path="/weather_forecast" element={<WeatherForecastPage />} />
+            <Route path="/weather_forecast" element={<WeatherPage />} />
             <Route path="/setting" element={<Setting />} />
           </Routes>
         </div>
       </div>
       <div className="right-wrapper">
         <div className="right-top">
-          <div className="weather">
-            <Weather />
-          </div>
-          <div className="icon">
-            <button onClick={addEvent}>
-              <EditCalendarOutlinedIcon />
-            </button>
-            <Link to="/">
-              <FormatListBulletedRoundedIcon />
-            </Link>
-            <Link to="/weather_forecast">
-              <WbSunnyRoundedIcon />
-            </Link>
-            <Link to="/setting">
-              <SettingsRoundedIcon />
-            </Link>
-          </div>
+          <button onClick={addEvent}>
+            <EditCalendarOutlinedIcon />
+          </button>
+          <Link to="/">
+            <FormatListBulletedRoundedIcon />
+          </Link>
+          <Link to="/weather_forecast">
+            <WbSunnyRoundedIcon />
+          </Link>
+          <Link to="/setting">
+            <SettingsRoundedIcon />
+          </Link>
         </div>
-        <div className="calender">
-          <Calender addEvent={addEvent} />
-        </div>
+        <Calender addEvent={addEvent} />
       </div>
     </div>
   );
