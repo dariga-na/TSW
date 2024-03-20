@@ -1,6 +1,7 @@
 import "./Schedule.css";
 import Form from "./Form.jsx";
 import EditForm from "./EditForm.jsx";
+import TodayList from "./TodayList.jsx";
 import React, { useEffect, useState } from "react";
 import { format, subDays } from "date-fns";
 import FullCalendar from "@fullcalendar/react";
@@ -11,7 +12,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import axios from "axios";
-const backendURL = "http://localhost:8001";
+const backendURL = "http://localhost:5001";
 
 export default function Calender(props) {
   // 全てのイベントを取得し、カレンダーに表示させる
@@ -105,6 +106,22 @@ export default function Calender(props) {
   };
 
   // ③
+  // 日付セルをクリックしてイベントを追加する
+  const [selectedDates, setSelectedDates] = useState({
+    selectStart: null,
+    selectEnd: null,
+  });
+
+  const handleDateSelect = (info) => {
+    const { start, end } = info;
+    setSelectedDates({
+      selectStart: start,
+      selectEnd: end,
+    });
+    props.addEvent();
+  };
+
+  // ④
   // イベント編集ボタンでフォーム切り替え、現データを編集画面に共有する
   const [editId, setEditId] = useState("");
   const [editTitle, setEditTitle] = useState("");
@@ -123,109 +140,95 @@ export default function Calender(props) {
     setEditEnd(end);
   };
 
-  // ④
-  // 日付セルをクリックしてイベントを追加する
-  const [selectedDates, setSelectedDates] = useState({
-    selectStart: null,
-    selectEnd: null,
-  });
-
-  const handleDateSelect = (info) => {
-    const { start, end } = info;
-    setSelectedDates({
-      selectStart: start,
-      selectEnd: end,
-    });
-    props.addEvent();
-  };
-
   return (
-    <div className="schedule-wrapper">
-      <div className="calender-body">
-        <FullCalendar
-          locale={"ja"}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          headerToolbar={{
-            start: "dayGridMonth,timeGridWeek,today",
-            center: "title",
-            end: "prev,next",
-          }}
-          buttonText={{
-            dayGridMonth: "月",
-            timeGridWeek: "週",
-          }}
-          views={{
-            dayGridMonth: {
-              dayCellContent: function (arg) {
-                return arg.date.getDate();
+    <>
+      <div className="schedule-wrapper">
+        <div className="calender-body">
+          <FullCalendar
+            locale={"ja"}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            headerToolbar={{
+              start: "dayGridMonth,timeGridWeek,today",
+              center: "title",
+              end: "prev,next",
+            }}
+            buttonText={{
+              dayGridMonth: "月",
+              timeGridWeek: "週",
+            }}
+            views={{
+              dayGridMonth: {
+                dayCellContent: function (arg) {
+                  return arg.date.getDate();
+                },
+                titleFormat: { year: "numeric", month: "2-digit" },
               },
-              titleFormat: { year: "numeric", month: "2-digit" },
-            },
-            timeGridWeek: {
-              titleFormat: { year: "numeric" },
-            },
-          }}
-          fixedWeekCount={false}
-          firstDay={1}
-          slotDuration={"00:30:00"}
-          scrollTime={"08:00:00"}
-          allDayContent={""}
-          eventTimeFormat={{
-            hour: "numeric",
-            minute: "2-digit",
-            meridiem: false,
-          }}
-          eventDisplay={"block"}
-          displayEventEnd={true}
-          events={data}
-          select={handleDateSelect}
-          selectable={true}
-          selectMirror={true}
-          eventClick={handleEventSelect}
-          eventMouseEnter={function (info) {}}
-          eventMouseLeave={function (info) {}}
+              timeGridWeek: {
+                titleFormat: { year: "numeric" },
+              },
+            }}
+            fixedWeekCount={false}
+            firstDay={1}
+            slotDuration={"00:30:00"}
+            scrollTime={"08:00:00"}
+            allDayContent={""}
+            eventTimeFormat={{
+              hour: "numeric",
+              minute: "2-digit",
+              meridiem: false,
+            }}
+            eventDisplay={"block"}
+            displayEventEnd={true}
+            events={data}
+            select={handleDateSelect}
+            selectable={true}
+            selectMirror={true}
+            eventClick={handleEventSelect}
+          />
+        </div>
+
+        {/* ＝＝＝以下はユーザーアクションで表示される隠れBOX＝＝＝ */}
+
+        {/* ①イベントクリックで表示される詳細BOX */}
+        <div className="eventInfo-container">
+          <div className="position-relative">
+            <CloseRoundedIcon className="close-btn" onClick={closeInfo} />
+            <h3 className="eventTitle"></h3>
+          </div>
+          <div className="eventDate"></div>
+          <div className="eventInfo-btnContainer">
+            <EditRoundedIcon onClick={confirmEdit} />
+            <DeleteIcon onClick={confirmDelete} />
+          </div>
+        </div>
+
+        {/* ②イベント詳細のごみ箱クリックで表示される確認BOX */}
+        <div className="confirmDelete-container">
+          <p>このイベントを削除しますか？</p>
+          <div>
+            <button onClick={deleteCancel}>キャンセル</button>
+            <button onClick={deleteEvent}>OK</button>
+          </div>
+        </div>
+
+        {/* ③イベント詳細の鉛筆クリックで表示される編集BOX */}
+        <Form
+          selectStart={selectedDates.selectStart}
+          selectEnd={selectedDates.selectEnd}
+        />
+
+        {/* ④日付セル選択してイベント追加するフォーム */}
+        <EditForm
+          editId={editId}
+          editTitle={editTitle}
+          editColor={editColor}
+          editStart={editStart}
+          editEnd={editEnd}
         />
       </div>
-
-      {/* ＝＝＝以下はユーザーアクションで表示される隠れBOX＝＝＝ */}
-
-      {/* ①イベントクリックで表示される詳細BOX */}
-      <div className="eventInfo-container">
-        <div className="position-relative">
-          <CloseRoundedIcon className="close-btn" onClick={closeInfo} />
-          <h3 className="eventTitle"></h3>
-        </div>
-        <div className="eventDate"></div>
-        <div className="eventInfo-btnContainer">
-          <EditRoundedIcon onClick={confirmEdit} />
-          <DeleteIcon onClick={confirmDelete} />
-        </div>
-      </div>
-
-      {/* ②イベント詳細のごみ箱クリックで表示される確認BOX */}
-      <div className="confirmDelete-container">
-        <p>このイベントを削除しますか？</p>
-        <div>
-          <button onClick={deleteCancel}>キャンセル</button>
-          <button onClick={deleteEvent}>OK</button>
-        </div>
-      </div>
-
-      {/* ③イベント詳細の鉛筆クリックで表示される編集BOX */}
-      <EditForm
-        editId={editId}
-        editTitle={editTitle}
-        editColor={editColor}
-        editStart={editStart}
-        editEnd={editEnd}
-      />
-
-      {/* ④日付セル選択してイベント追加するフォーム */}
-      <Form
-        selectStart={selectedDates.selectStart}
-        selectEnd={selectedDates.selectEnd}
-      />
-    </div>
+      {/* 別表示のため.schedule-wrapperから外す */}
+      <TodayList data={data} handleEventSelect={handleEventSelect} />
+    </>
   );
 }

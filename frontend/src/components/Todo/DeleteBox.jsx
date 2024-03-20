@@ -28,7 +28,7 @@ export const DeleteBox = ({ deleteTask }) => {
   // ドラッグ中にスタイル変化させる
   const buttonStyle = {
     cursor: "auto",
-    backgroundColor: isActive ? "rgb(81, 79, 79)" : "",
+    backgroundColor: isActive ? "var(--font-gray-color)" : "",
     width: isActive ? "5rem" : "",
     transition: isActive ? "0.2s" : "",
     borderRadius: isActive ? "2rem" : "",

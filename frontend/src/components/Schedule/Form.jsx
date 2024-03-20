@@ -10,7 +10,6 @@ import {
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
   TextField,
@@ -18,7 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import axios from "axios";
-const backendURL = "http://localhost:8001";
+const backendURL = "http://localhost:5001";
 
 export default function Form(props) {
   // タイトルのエラー表示とデータ登録

@@ -1,5 +1,5 @@
 .weather-wrapper {
-  height: 100%;
+  height: 99%;
   border-radius: 1rem;
   box-shadow: 0 0 1rem #fff;
 }
@@ -14,9 +14,9 @@
 .city-name {
   margin-top: 0.5rem;
   margin-left: 3rem;
-  color: rgb(81, 79, 79);
+  color: var(--font-gray-color);
   font-weight: bolder;
-  background-color: #ffffffb2;
+  background-color: var(--light-opacity-color);
   padding: 0.5rem;
   border-radius: 2rem;
 }
@@ -24,7 +24,6 @@
 .today-title {
   margin-top: 0.5rem;
   font-size: 1.2rem;
-  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +68,8 @@
   padding: 0.3rem;
   font-size: 1rem;
   margin: 0 0.5rem;
-  background-color: var(--light-opacity-color);
   border-radius: 1rem !important;
+  background-color: var(--light-opacity-color);
 }
 
 .forecastBtn-container button:hover {
@@ -87,10 +86,11 @@
   height: 100%;
   width: 47%;
   padding: 0.2rem 0.5rem;
-  text-align: center;
-  background-color: var(--dark-opacity-color);
   border-radius: 1rem;
+  background-color: var(--dark-opacity-color);
+  color: #fff;
   box-shadow: 0 0 1rem #fff;
+  text-align: center;
   position: absolute;
   top: 0;
   left: 51%;
@@ -143,7 +143,8 @@
   height: 100%;
   margin-right: 0.1rem;
   background-color: var(--medium-light-opacity-color);
-  text-align: center;
+  color: var(--theme-font-color);
   font-size: 0.9rem;
   border-radius: 0.5rem;
+  text-align: center;
 }

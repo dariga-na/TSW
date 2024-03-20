@@ -6,14 +6,38 @@
 }
 
 :root {
-  --dark-color: rgb(150, 0, 200); /* 濃い色 */
-  --dark-opacity-color: rgba(150, 0, 200, 0.9); /* 濃い色透明 */
-  --medium-dark-color: rgb(175, 65, 215); /* やや濃い色 */
-  --medium-dark-opacity-color: rgba(175, 65, 215, 0.9); /* やや濃い色 */
-  --medium-light-color: rgb(200, 130, 230); /* やや薄い色 */
-  --medium-light-opacity-color: rgba(200, 130, 230, 0.8); /* やや薄い色 */
-  --light-color: rgb(225, 195, 245); /* 薄い色 */
-  --light-opacity-color: rgba(225, 195, 245, 0.8); /* 薄い色 */
+  /* font用固定 */
+  --font-gray-color: rgb(80, 80, 80);
+
+  /* テーマカラー用 */
+  /* 濃い色 */
+  --dark-color: rgba(30, 30, 30, 0);
+  --dark-opacity-color: rgba(30, 30, 30, 0);
+  /* やや濃い色透明 */
+  --medium-dark-opacity-color: rgba(100, 100, 100, 0);
+  /* やや薄い色 */
+  --medium-light-color: rgba(150, 150, 150, 0);
+  --medium-light-opacity-color: rgba(150, 150, 150, 0);
+  /* 薄い色 */
+  --light-color: rgba(200, 200, 200, 0);
+  --light-opacity-color: rgba(200, 200, 200, 0);
+  /* テーマに合わせたフォント色 */
+  --theme-font-color: rgba(255, 255, 255, 0);
+
+  /* フォント選択カラー */
+  --select-font-color: rgb(255, 255, 255, 0);
+
+  /* 背景カラー */
+  --gradient-left: rgb(250, 250, 250);
+  --gradient-right: rgb(250, 250, 250);
+}
+
+.app {
+  background: linear-gradient(
+    -20deg,
+    var(--gradient-right) 0%,
+    var(--gradient-left) 100%
+  );
 }
 
 .main-wrapper {
@@ -33,84 +57,54 @@
 
 /* ＝＝＝左上＝＝＝ */
 .left-top {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
   height: 16%;
+  position: relative;
 }
 
 /* 今日の日付 */
 .today {
   width: 40%;
-  color: #fff;
+  padding-top: 0.5rem;
+  color: var(--select-font-color);
+  font-style: italic;
+  font-size: 1.1rem;
+  text-shadow: 0.1rem 0.1rem 0.2rem rgba(255, 255, 255, 0.7);
+  position: absolute;
+  top: 0;
+  left: 10%;
 }
 
 .today p {
   font-size: 1.5rem;
 }
 
-/* 今日の予定 */
-.today-list {
-  width: 50%;
-  height: 100%;
-}
-
-.fc {
-  height: 100%;
-}
-
-.fc .fc-list-table td {
-  border: none;
-  padding: 0 0.5rem 0;
-}
-
-.fc-theme-standard .fc-list {
-  border: none;
-}
-
-.fc-list-day {
-  display: none;
-}
-
-tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-event {
-  color: #fff;
-}
-
-:root {
-  --fc-list-event-hover-bg-color: none;
-}
-
-/* 予定がないときの表示 */
-.noEventInfo {
-  color: #fff;
-  font-size: large;
-}
-.fc .fc-list-empty {
-  background-color: #ffffff00;
-  justify-content: left;
-}
-
 /* ＝＝＝linkページ共通＝＝＝ */
 .link-page {
   height: 84%;
-  color: #fff;
+  color: var(--select-font-color);
 }
 
-/* ======右上========== */
+/* ＝＝＝右上＝＝＝ */
 .right-top {
   width: 100%;
   height: 10%;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.openPage-container {
+  display: flex;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .right-top button,
 .right-top a {
   background-color: var(--light-opacity-color);
-  color: rgb(81, 79, 79);
+  color: var(--font-gray-color);
   border: none;
   padding: 0.5rem;
   border-radius: 50%;
@@ -135,18 +129,36 @@ tr.fc-event.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-list-e
   color: #000;
 }
 
+/* 別ウィンドウで開く公式ページ */
+.right-top .openPage-container button {
+  background-color: #ffffffcb;
+  font-family: "Courgette", cursive;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  width: 10rem;
+  height: 70%;
+  transform: skew(-20deg);
+  box-shadow: 0 0 0.5rem #ffffff;
+}
+
+/* ＝＝＝全ページ共通CSS＝＝＝ */
+/* 半透明にする */
 .opacity-low {
   opacity: 0.5;
   transition-duration: 1s;
 }
 
+/* コンテナを最前面に */
 .visible {
   z-index: 10 !important;
   transition-duration: 1s !important;
 }
 
+/* コンテナを最背面に */
 .display-none {
-  z-index: -10;
+  z-index: -10 !important;
+  transition-duration: 1s !important;
 }
 
 /* 右上に閉じるボタン置きたいときの2点セット */

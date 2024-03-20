@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 const passKey = process.env.DB_PASS;
 const apiKey = process.env.API_KEY;
+const PORT = process.env.PORT || 5001;
 
 // MongoDBへの接続
 mongoose
@@ -14,37 +15,28 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("Error connecting to MongoDB", err));
 
-// スケジュール管理のバックエンド
-const appCalender = express();
+// ＝＝＝カレンダー、Todo、ノート、設定のバックエンド＝＝＝
+const app = express();
 const CalenderApiRouter = require("./routes/EventRoutes");
-const calenderPORT = process.env.PORT || 8001;
-
-appCalender.use(express.urlencoded({ extended: true }));
-appCalender.use(express.json());
-appCalender.use(cors());
-appCalender.use("/api", CalenderApiRouter);
-
-appCalender.listen(calenderPORT, () => {
-  console.log(`Server is running on port ${calenderPORT}`);
-});
-
-// タスク管理のバックエンド
-const appTodo = express();
 const TaskApiRouter = require("./routes/TaskRoutes");
 const LabelApiRouter = require("./routes/LabelRoutes");
-const todoPORT = process.env.PORT || 5001;
+const NotepadApiRouter = require("./routes/NotepadRoutes");
+const SettingApiRouter = require("./routes/SettingRoutes");
 
-appTodo.use(express.urlencoded({ extended: true }));
-appTodo.use(express.json());
-appTodo.use(cors());
-appTodo.use("/api/tasks", TaskApiRouter);
-appTodo.use("/api/labels", LabelApiRouter);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
+app.use("/api", CalenderApiRouter);
+app.use("/api/tasks", TaskApiRouter);
+app.use("/api/labels", LabelApiRouter);
+app.use("/api/notepads", NotepadApiRouter);
+app.use("/api/settings", SettingApiRouter);
 
-appTodo.listen(todoPORT, () => {
-  console.log(`Server is running on port ${todoPORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
-// 天気取得のバックエンド
+// ＝＝＝天気取得のバックエンド＝＝＝
 const appWeather = express();
 const weatherPORT = process.env.PORT || 5000;
 
@@ -59,8 +51,6 @@ appWeather.listen(weatherPORT, () => {
 appWeather.post("/weather_forecast", async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
-    console.log("Received Latitude:", latitude);
-    console.log("Received Longitude:", longitude);
 
     const forecastResponse = await axios.get(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=ja`,
@@ -82,8 +72,6 @@ appWeather.post("/weather_forecast", async (req, res) => {
 appWeather.post("/weather_current", async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
-    console.log("Received Latitude:", latitude);
-    console.log("Received Longitude:", longitude);
 
     const currentResponse = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=ja`,
@@ -101,4 +89,4 @@ appWeather.post("/weather_current", async (req, res) => {
   }
 });
 
-module.exports = { appCalender, appTodo, appWeather };
+module.exports = { app, appWeather };

@@ -1,0 +1,86 @@
+.setting-wrapper {
+  height: 99%;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem #fff;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.setting-wrapper h3 {
+  font-size: 1.3rem;
+}
+
+.background-container {
+  height: 43%;
+}
+
+.colorPicker-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.5rem;
+  width: 100%;
+  height: 88%;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.input-container p {
+  font-size: 1.2rem;
+  padding-right: 0.5rem;
+}
+
+.input-container input {
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  background-color: #ffffff00;
+}
+.input-container input:hover {
+  cursor: pointer;
+}
+
+.preview-box {
+  width: 45%;
+  height: 95%;
+  border: 0.2rem solid var(--select-font-color);
+}
+
+.mainColor-container,
+.fontColor-container {
+  height: 15%;
+  margin-top: 1.5rem;
+}
+
+/* Schedule.cssと同じ */
+.radioGroup {
+  justify-content: space-between !important;
+  background-color: #afafaf;
+  border-radius: 0.3rem;
+  border: none;
+  box-shadow: 0 0 0.5rem #afafaf;
+  height: 2.5rem;
+  padding-left: 30px;
+}
+
+.setting-btn {
+  width: 30%;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  background-color: var(--medium-light-opacity-color);
+  color: var(--theme-font-color);
+  border: var(--medium-dark-opacity-color) solid 0.1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 2rem;
+  box-shadow: 0 0.2rem #777777;
+  transition-property: box-shadow;
+}
+
+.setting-btn:hover {
+  background-color: var(--medium-dark-opacity-color);
+}

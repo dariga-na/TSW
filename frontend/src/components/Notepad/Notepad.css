@@ -1,0 +1,54 @@
+.notepad-wrapper {
+  height: 99%;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem #fff;
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.save-container {
+  display: flex;
+  width: 13%;
+  height: 5%;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.save-container p {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  text-align: center;
+  background-color: var(--medium-light-color);
+  color: #000;
+  z-index: -1;
+}
+.save-btn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--light-opacity-color);
+  color: var(--font-gray-color);
+  box-shadow: 0 0 0.5rem #000000;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: var(--medium-light-opacity-color);
+  color: #000;
+}
+
+.notepad-wrapper textarea {
+  background-color: #ffffff00;
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  font-size: 1.3rem;
+  color: var(--select-font-color);
+}
