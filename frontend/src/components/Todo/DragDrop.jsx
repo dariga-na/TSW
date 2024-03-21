@@ -51,9 +51,10 @@ export const DragDrop = memo(function DragDrop() {
     setTRformOpen(formName === "TR" ? true : false);
     if (formName === "LL") {
       setNewText(leftLabel);
-    }
-    if (formName === "LR") {
+    } else if (formName === "LR") {
       setNewText(rightLabel);
+    } else {
+      setNewText("");
     }
   };
 

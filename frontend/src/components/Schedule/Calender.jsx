@@ -31,6 +31,18 @@ export default function Calender(props) {
     fetchData();
   }, [data]);
 
+  // ①
+  // イベントをクリックしてデータを取得、一時保存する
+  const handleEventSelect = async (info) => {
+    const id = info.event.id;
+    try {
+      const response = await axios.get(`${backendURL}/api/eventinfo/${id}`);
+      setEventData(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   // カレンダー本体、隠れBOX
   const calenderElement = document.querySelector(".calender-body");
   const infoElement = document.querySelector(".eventInfo-container");
@@ -39,23 +51,14 @@ export default function Calender(props) {
     ".confirmDelete-container"
   );
 
-  // ①
-  // イベントをクリックしてデータを取得、一時保存する
-  const handleEventSelect = async (info) => {
-    const id = info.event.id;
-
-    try {
-      const response = await axios.get(`${backendURL}/api/eventinfo/${id}`);
-      setEventData(response.data[0]);
-      calenderElement.classList.add("opacity-low");
-      infoElement.classList.add("visible");
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   // イベントデータを詳細表示
   useEffect(() => {
+    if (calenderElement) {
+      calenderElement.classList.add("opacity-low");
+    }
+    if (infoElement) {
+      infoElement.classList.add("visible");
+    }
     document.querySelector(".eventInfo-container").style.background =
       eventData.color;
     document.querySelector(".eventTitle").textContent = `${eventData.title}`;
